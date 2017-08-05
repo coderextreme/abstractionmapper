@@ -1,0 +1,51 @@
+type
+name
+revision
+format ...
+	file ...
+to
+	relationship ...
+		objects ...
+from
+	relationship ...
+		objects ...
+
+object_id
+attribute
+value
+
+Format type Type
+Relationship type Type
+Drawing type Type
+Drawing name Drawing
+Drawing revision 1
+object_id type Drawing
+object_id name AAA03-123456
+object_id revision AA
+object_id format HPGL_1
+object_id format HPGL_2
+object_id from parent_1
+object_id from parent_2
+object_id to child_1
+object_id to child_2
+parent_1 type Relationship
+parent_1 name parent_1_relationship
+parent_1 revision A
+parent_1 from object_id
+parent_2 from object_id
+child_1 to object_id
+child_2 to object_id
+HPGL_1 type Format
+HPGL_1 name HPGL
+HPGL_1 revision A
+HPGL_1 file http://www.llnl.gov
+HPGL_1 file http://www.yahoo.com
+
+URL pointing to Hashtable of object_ids pointing to Hashtables of attributes
+pointing to Vectors containing URLs&object_id or other Objects.
+
+format
+type (Element, Attribute, Text) (Segment, Element, Subelement)
+name
+value
+subobjects

@@ -1,0 +1,101 @@
+classes icon classes.gif
+relationships icon relationships.gif
+flag icon flag.gif
+country bitmap Country.gif
+building icon building.gif
+store icon db.gif
+site icon default.gif
+disk icon disk.gif
+flag icon flag.gif
+function icon func.gif
+gate icon gate.gif
+micro icon micro.gif
+mini icon mini.gif
+phone icon phone.gif
+project icon project.gif
+workstation icon workstation.gif
+communicate icon communicate.gif
+connect icon connect.gif
+flow icon flow2.gif
+flowsover icon flowsover.gif
+partof icon partof.gif
+
+CR1 relationship parental
+CR1 parent classes
+CR1 child flag
+
+CR2 relationship parental
+CR2 parent classes
+CR2 child building
+
+CR3 relationship parental
+CR3 parent classes
+CR3 child store
+
+CR4 relationship parental
+CR4 parent classes
+CR4 child site
+
+CR5 relationship parental
+CR5 parent classes
+CR5 child disk
+
+CR6 relationship parental
+CR6 parent classes
+CR6 child function
+
+CR7 relationship parental
+CR7 parent classes
+CR7 child gate
+
+CR8 relationship parental
+CR8 parent classes
+CR8 child micro
+
+CR9 relationship parental
+CR9 parent classes
+CR9 child mini
+
+CR10 relationship parental
+CR10 parent classes
+CR10 child phone
+
+CR11 relationship parental
+CR11 parent classes
+CR11 child project
+
+CR12 relationship parental
+CR12 parent classes
+CR12 child workstation
+
+RR13 relationship parental
+RR13 parent relationships 
+RR13 child communicate
+
+RR14 relationship parental
+RR14 parent relationships 
+RR14 child connect
+
+RR15 relationship parental
+RR15 parent relationships 
+RR15 child flow
+
+RR16 relationship parental
+RR16 parent relationships 
+RR16 child flowsover
+
+RR17 relationship parental
+RR17 parent relationships 
+RR17 child icon
+
+MM1 relationship parental
+MM1 parent 14
+MM1 child classes
+
+MM1 relationship parental
+MM1 parent 14
+MM1 child country
+
+MM1 relationship parental
+MM1 parent 14
+MM1 child relationships

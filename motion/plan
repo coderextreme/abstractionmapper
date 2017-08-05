@@ -1,0 +1,22 @@
+object (name->value pairs)
+	background_image->
+	...
+
+relationship is an object
+	x location->
+	y location->
+	width size->
+	length size->
+	icon_image->
+	parent->
+	child->
+	label->
+	name->
+	type->parental
+	...
+
+polyline is an object
+	point_0->
+	point_1->
+	point_2->
+	...

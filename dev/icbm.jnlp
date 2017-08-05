@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JNLP File for ICBM -->
+<jnlp
+  spec="1.0+"
+  codebase="http://localhost/webstart/chat"
+  href="icbm.jnlp">
+  <information>
+    <title>Internet Chat By MUD</title>
+    <vendor>John Carlson</vendor>
+    <description>Chatting with extensible rooms</description>
+  </information>
+  <resources>
+    <j2se version="1.4+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="icbm.jar"/>
+  </resources>
+  <application-desc main-class="LocalMUDClient"/>
+  <security>
+   <all-permissions/>
+  </security>
+</jnlp>

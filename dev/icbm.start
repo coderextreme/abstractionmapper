@@ -1,0 +1,8 @@
+#!/bin/sh
+rmiregistry &
+sleep 1
+sh server.sh &
+sleep 3
+sh client.sh &
+sleep 1
+sh client2.sh &

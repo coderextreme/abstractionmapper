@@ -1,0 +1,32 @@
+Actions*label.translations: #override \n\
+	<Btn2Down>:selectionAdd()	\n\
+	<Btn1Down>:     press()         \n\
+	<Btn1Motion>:   drag()          \n\
+	<Btn1Up>:       drag() \n\
+	<Key>t:		raise() \n\
+	<Key>a:		lower() \n\
+	<Key>p:		props() \n\
+	<Key>b:		browse() \n\
+	<Key>c:		makeRelation(child) \n\
+	<Key>f:		makeRelation(parent) \n\
+	<Key>r:		pressRel() \n\
+	<Key>u:		unlink() \n\
+	<Key>o:		view()
+
+Actions*myapp.translations: #override \n\
+	<Key>p:		props() \n\
+	<Key>b:		browse() \n\
+	<Key>m:		moveTo() \n\
+	<Key>i:		copyTo() \n\
+	<Key>l:		linkTo() \n\
+	<Key>o:		view() \n\
+	<Key>e:		expose() \n\
+	<Expose>:	expose() \n\
+	<Key>s:		addPoint() \n\
+	<Key>d:		endLine() \n\
+	<Motion>:    motionLine() \n\
+	<Btn1Down>,<Btn1Up>:	selectLine() \n\
+	<Btn1Down>:	pressNone()
+!	<Btn1Up>:   dragOnto() \n\
+!	<Btn1Motion>:   dragOnto() \n\
+
