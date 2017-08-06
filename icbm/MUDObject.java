@@ -86,6 +86,17 @@ public class MUDObject implements MUDRemote, Runnable {
 		missing_parents = new Vector();
 		name = url.substring(eh+1);
 		this.url = url;
+		getNetworkPermission();
+		MUDRemote stub = (MUDRemote) UnicastRemoteObject.exportObject(this, 0);
+		System.err.println("pp is "+pp+", eh is "+eh);
+		Registry registry = null;
+		if (pp < 2) {
+			// localhost
+			registry = LocateRegistry.getRegistry();
+		} else {
+			registry = LocateRegistry.getRegistry(url.substring(pp, eh));
+		}
+		registry.rebind(name, stub);
 		readAliases();
 	}
 	public MUDObject() throws RemoteException {
@@ -95,7 +106,7 @@ public class MUDObject implements MUDRemote, Runnable {
 		if (settings == null) {
 			try {
 				settings = new Properties();
-				InputStream is = MUDObject.class.getClassLoader().getResourceAsStream("objects.properties");
+				InputStream is = MUDObject.class.getClassLoader().getResourceAsStream("dev/objects.properties");
 				if (is == null) {
 					System.err.println("input stream for properties is null");
 					System.exit(0);
@@ -770,7 +781,7 @@ public class MUDObject implements MUDRemote, Runnable {
 			registry.rebind(name, stub);
 			// UnicastRemoteObject.exportObject(this);
 			// Naming.rebind(url, this);
-			settings.load(getClass().getClassLoader().getResourceAsStream("objects.properties"));
+			settings.load(getClass().getClassLoader().getResourceAsStream("dev/objects.properties"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -779,11 +790,17 @@ public class MUDObject implements MUDRemote, Runnable {
 		return url;
 	}
 	public boolean equals(Object obj) {
-		if (url == null || ((MUDObject)obj).url == null) {
+		try {
+			MUDRemote mr = (MUDRemote)obj;
+			if (url == null || mr.getURL() == null) {
+				return false;
+			}
+			System.err.println("testing "+url+ " against "+mr.getURL());
+			return url.equalsIgnoreCase(mr.getURL());
+		} catch (RemoteException re) {
+			re.printStackTrace();
 			return false;
 		}
-		System.err.println("testing "+url+ " against "+((MUDObject)obj).url);
-		return url.equalsIgnoreCase(((MUDObject)obj).url);
 	}
 	JComponent comp = null;
 	int ss = 5; // handles square width

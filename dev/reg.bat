@@ -1,2 +1,2 @@
 set CLASSPATH=.
-rmiregistry
+start rmiregistry

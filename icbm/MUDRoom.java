@@ -31,7 +31,7 @@ public class MUDRoom extends MUDObject {
 		super(getProperty(n+".URL"));
 		System.err.println("getting property "+n+".URL");
 		System.err.println("property is "+(getProperty(n+".URL")));
-		setURL(getProperty(n+".URL"));
+		// setURL(getProperty(n+".URL"));
 	}
 	public int command(MUDRemote subject, Vector comm)
 		throws RemoteException {

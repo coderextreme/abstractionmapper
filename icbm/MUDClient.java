@@ -153,7 +153,7 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 			room = MUDObject.getProperty(s+".URL");
 			try {
 				MUDObject.getNetworkPermission();
-				MUDRemote mr = (MUDRemote)Naming.lookup(room);
+				MUDRemote mr = (MUDRemote)MUDObject.lookup(room);
 				if (mr != null) {
 					if (jb.isSelected()) {
 						try {
