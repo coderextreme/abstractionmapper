@@ -5,9 +5,7 @@ OBJS= HashtableRemote.class BrowseObject.class BrowseRelationship.class MetaMoti
 	javac -g -classpath "../dev;..;." $?
 
 run: $(OBJS) .
-	# (cd ..; rmic motion.HashtableRemote; cd motion)
-	./icbmmotion.bat
-# (java -classpath "E:\apps;E:\apps\dev;..;." motion.Motion prop.data gedda\\)
+	(cd ..; ./icbmmotion.bat)
 
 jar:
 	jar -cf motion.jar *java prop.data
