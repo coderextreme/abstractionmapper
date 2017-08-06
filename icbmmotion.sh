@@ -1,4 +1,4 @@
-export CLASSPATH=dev:.
+export CLASSPATH=.
 rmiregistry &
 sleep 5
 java icbm.MUDServer ICBM &
