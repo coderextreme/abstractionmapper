@@ -31,13 +31,13 @@ class object_list extends Hashtable {
 					// note that top level objects must have a string key
 					String stri = v.toString().intern();
 					if (stri.equals(Motion.PROP_X)) {
-						newvalues.addElement(new Integer(stri));
+						newvalues.addElement(Integer.parseInt(stri));
 					} else if (stri.equals(Motion.PROP_Y)) {
-						newvalues.addElement(new Integer(stri));
+						newvalues.addElement(Integer.parseInt(stri));
 					} else if (stri.equals(Motion.PROP_WIDTH)) {
-						newvalues.addElement(new Integer(stri));
+						newvalues.addElement(Integer.parseInt(stri));
 					} else if (stri.equals(Motion.PROP_HEIGHT)) {
-						newvalues.addElement(new Integer(stri));
+						newvalues.addElement(Integer.parseInt(stri));
 					} else if (mr.get(stri) != null) {
 						ObjectAtURL uo = new ObjectAtURL();
 						uo.URL = mr.getURL();

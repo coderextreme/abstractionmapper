@@ -24,10 +24,10 @@ CLASSFILES = MUDServer.class \
 all: $(CLASSFILES)
 
 MUDObject_Skel.class: MUDObject.class
-	rmic -classpath .. -d .. icbm.MUDObject
+	# rmic -classpath .. -d .. icbm.MUDObject
 
 MUDObject_Stub.class: MUDObject.class
-	rmic -classpath .. -d .. icbm.MUDObject
+	# rmic -classpath .. -d .. icbm.MUDObject
 
 clean:
 	rm *.class

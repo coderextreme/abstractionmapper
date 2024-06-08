@@ -1,3 +1,4 @@
+set CLASSPATH=.
 start rmiregistry
 sleep 5
 start java icbm.MUDServer ICBM
