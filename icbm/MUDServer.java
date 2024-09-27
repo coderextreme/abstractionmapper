@@ -20,6 +20,10 @@ public class MUDServer extends MUDClient {
 			Thread.sleep(1);
 			icbm.MUDRemote val = new icbm.Valley("Valley");
 			Thread.sleep(1);
+			icbm.MUDRemote cp = new icbm.ClassParent("class_parent");
+			Thread.sleep(1);
+			icbm.MUDRemote base = new icbm.Base("base");
+			Thread.sleep(1);
 			icbm.MUDClient.main(args);
 		} catch (Exception e) {
 			System.err.println("Exception "+e);

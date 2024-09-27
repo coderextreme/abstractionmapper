@@ -962,12 +962,16 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	public void launch() {
 		WebDriver driver = new ChromeDriver();
 		System.err.println("Driver is "+driver.getClass().getName());
-		for (Enumeration e = clipboard.elements();
+		for (Enumeration e = selected.elements();
 				e != null && e.hasMoreElements(); ) {
+			System.err.println("Found a selected object.");
 			JComponent jc = (JComponent)e.nextElement();
 			MUDRemote o = (MUDRemote)jc.getClientProperty("object");
 			if (o == null) {
+				System.err.println("Remote object property is null.  OOPS!");
 				continue;
+			} else {
+				System.err.println("Found an object property!");
 			}
 			try {
 				System.err.println("Launching web browser for "+o.get(PROP_LABEL)+".");
