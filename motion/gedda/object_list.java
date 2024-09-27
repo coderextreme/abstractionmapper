@@ -87,7 +87,7 @@ public class object_list extends Hashtable<String,object_node> {
 		f = new BufferedReader(new FileReader(ifn));
 		if (f != null) {
 			s = f.readLine();
-			next_id = new Integer(s).intValue();
+			next_id = Integer.valueOf(s);
 			f.close();
 		}
 		f = new BufferedReader(new FileReader(pfn));

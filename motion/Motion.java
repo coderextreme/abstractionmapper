@@ -11,7 +11,13 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 import icbm.*;
-
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chromium.ChromiumDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.safari.SafariDriver;
 
 public class Motion extends JInternalFrame implements InternalFrameListener,
 		MouseListener, MouseMotionListener, ComponentListener,
@@ -42,6 +48,9 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	public static final String PROP_ORDER		= "order";
 	public static final String PROP_HEAD		= "head";
 	public static final String PROP_TAIL		= "tail";
+	public static final String PROP_COLLABORATIONSERVER = "CollaborationServer";
+	public static final String PROP_SESSIONNAME	= "SessionName";
+	public static final String PROP_SESSIONPASSWORD	= "SessionPassword";
 	public static final String VALUE_FIRST		= "first";
 	public static final String VALUE_MIDDLE		= "middle";
 	public static final String VALUE_LAST		= "last";
@@ -134,7 +143,7 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 		bg.add(jbreak_jrb);
 
 		bigdesk.addWindowListener(new WindowAdapter() {
-			public void windoClosing(WindowEvent we) {
+			public void windowClosing(WindowEvent we) {
 				System.exit(0);
 			}
 		});
@@ -276,6 +285,9 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 		jmi.setActionCommand((String)TransferHandler.getPasteAction().getValue(Action.NAME));
 		jmi.setAccelerator( KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
 		edit.add(jmi);
+		jmi = new JMenuItem("Launch Browser Collaboration");
+		jmi.addActionListener(new LaunchAction());
+		edit.add(jmi);
 		jmi = new JMenuItem("Run");
 		jmi.addActionListener(new RunAction());
 		edit.add(jmi);
@@ -324,6 +336,9 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 			JComponent.WHEN_IN_FOCUSED_WINDOW);
 		workarea.registerKeyboardAction(new SaveAction(),
 			"Save", KeyStroke.getKeyStroke('s'),
+			JComponent.WHEN_IN_FOCUSED_WINDOW);
+		workarea.registerKeyboardAction(new LaunchAction(),
+			"Launch Browser Collaboration", KeyStroke.getKeyStroke('l'),
 			JComponent.WHEN_IN_FOCUSED_WINDOW);
 		workarea.registerKeyboardAction(new MoveAction(),
 			"Make a Move Operation", KeyStroke.getKeyStroke('m'),
@@ -386,10 +401,10 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 			imd.setLocation(0,0);
 		} else if  (subj != null) {
 			if (subj.getInt(PROP_WIDTH) == 0) {
-				subj.putInt(PROP_WIDTH, 400);
+				subj.putInt(PROP_WIDTH, 48);
 			}
 			if (subj.getInt(PROP_HEIGHT) == 0) {
-				subj.putInt(PROP_HEIGHT, 200);
+				subj.putInt(PROP_HEIGHT, 28);
 			}
 		}
 		if (imd != null) {
@@ -406,7 +421,7 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 			int h = subj.getInt(PROP_HEIGHT);
 			setSize(w,h);
 		} else {
-			setSize(400,200);
+			setSize(48,48);
 		}
 		// setVisible(true);
 
@@ -944,6 +959,31 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	}
 
 
+	public void launch() {
+		WebDriver driver = new ChromeDriver();
+		System.err.println("Driver is "+driver.getClass().getName());
+		for (Enumeration e = clipboard.elements();
+				e != null && e.hasMoreElements(); ) {
+			JComponent jc = (JComponent)e.nextElement();
+			MUDRemote o = (MUDRemote)jc.getClientProperty("object");
+			if (o == null) {
+				continue;
+			}
+			try {
+				System.err.println("Launching web browser for "+o.get(PROP_LABEL)+".");
+				String cs = o.get(PROP_COLLABORATIONSERVER);
+				System.err.println(PROP_COLLABORATIONSERVER+":"+cs);
+				String sn = o.get(PROP_SESSIONNAME);;
+				System.err.println(PROP_SESSIONNAME+":"+sn);
+				String pwd = o.get(PROP_SESSIONPASSWORD);
+				System.err.println(PROP_SESSIONPASSWORD+":"+pwd);
+				driver.get(cs+"?sessionName="+sn+"&sessionPassword="+pwd);
+			} catch (Exception re) {
+				System.err.println("Cannot send Edge web browser to collaboration site.  Need:  "+PROP_COLLABORATIONSERVER+", "+PROP_SESSIONNAME+", and "+PROP_SESSIONPASSWORD);
+				re.printStackTrace(System.err);
+			}
+		}
+	}
 	public void copy() {
 		clipboard.removeAllElements();
 		clipboard.addAll(selected);
@@ -1345,6 +1385,12 @@ class CutAction implements ActionListener {
 		cut();
 	}
 }
+class LaunchAction implements ActionListener {
+	public void actionPerformed(ActionEvent ae) {
+		launch();
+	}
+}
+
 class CopyAction implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		copy();

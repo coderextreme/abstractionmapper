@@ -29,5 +29,5 @@ icbms.jar:
 
 redokey:
 	-keytool -delete -keystore $(KEYSTORE) -alias myself
-	keytool -genkey -keystore $(KEYSTORE) -alias myself
+	keytool -genkey -keyalg DSA -keystore $(KEYSTORE) -alias myself
 	keytool -selfcert -keystore $(KEYSTORE) -alias myself
