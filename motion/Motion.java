@@ -18,6 +18,7 @@ import org.openqa.selenium.chromium.ChromiumDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import com.formdev.flatlaf.FlatLightLaf;
 
 public class Motion extends JInternalFrame implements InternalFrameListener,
 		MouseListener, MouseMotionListener, ComponentListener,
@@ -98,6 +99,8 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	    try {
 		try {
 			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			UIManager.setLookAndFeel(new FlatLightLaf());
 		} catch (Exception e) {
 			System.out.println(e);
 		}

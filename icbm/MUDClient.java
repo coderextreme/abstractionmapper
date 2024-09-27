@@ -31,6 +31,7 @@ import javax.swing.text.*;
 import javax.swing.text.html.*;
 import javax.swing.event.*;
 import java.rmi.registry.*;
+import com.formdev.flatlaf.FlatLightLaf;
 
 class NickPrompt implements ActionListener {
 	JFrame jf = new JFrame("Enter nick:");
@@ -115,7 +116,13 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 			ex.printStackTrace();
 		}
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		        try {
+			    // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			    // UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			    UIManager.setLookAndFeel(new FlatLightLaf());
+			} catch (Exception e) {
+			    e.printStackTrace();
+			}
 			init();
 			rooms = new JPanel();
 			BoxLayout bl = new BoxLayout(rooms, BoxLayout.Y_AXIS);
