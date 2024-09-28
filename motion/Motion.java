@@ -3,6 +3,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.awt.*;
 import java.rmi.*;
+import java.net.*;
 import java.io.*;
 import java.util.*;
 import java.awt.dnd.*;
@@ -52,6 +53,7 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	public static final String PROP_COLLABORATIONSERVER = "CollaborationServer";
 	public static final String PROP_SESSIONNAME	= "SessionName";
 	public static final String PROP_SESSIONPASSWORD	= "SessionPassword";
+	public static final String PROP_WEBSOCKET	= "WebSocket";
 	public static final String VALUE_FIRST		= "first";
 	public static final String VALUE_MIDDLE		= "middle";
 	public static final String VALUE_LAST		= "last";
@@ -980,13 +982,15 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 				System.err.println("Launching web browser for "+o.get(PROP_LABEL)+".");
 				String cs = o.get(PROP_COLLABORATIONSERVER);
 				System.err.println(PROP_COLLABORATIONSERVER+":"+cs);
-				String sn = o.get(PROP_SESSIONNAME);;
+				String sn = URLEncoder.encode(o.get(PROP_SESSIONNAME));
 				System.err.println(PROP_SESSIONNAME+":"+sn);
-				String pwd = o.get(PROP_SESSIONPASSWORD);
+				String pwd = URLEncoder.encode(o.get(PROP_SESSIONPASSWORD));
 				System.err.println(PROP_SESSIONPASSWORD+":"+pwd);
-				driver.get(cs+"?sessionName="+sn+"&sessionPassword="+pwd);
+				String ws = URLEncoder.encode(o.get(PROP_WEBSOCKET));
+				System.err.println(PROP_WEBSOCKET+":"+ws);
+				driver.get(cs+"/"+sn+"/"+pwd+"/"+ws);
 			} catch (Exception re) {
-				System.err.println("Cannot send Edge web browser to collaboration site.  Need:  "+PROP_COLLABORATIONSERVER+", "+PROP_SESSIONNAME+", and "+PROP_SESSIONPASSWORD);
+				System.err.println("Cannot send Edge web browser to collaboration site.  Need:  "+PROP_COLLABORATIONSERVER+", "+PROP_SESSIONNAME+", "+PROP_WEBSOCKET+", and "+PROP_SESSIONPASSWORD);
 				re.printStackTrace(System.err);
 			}
 		}
