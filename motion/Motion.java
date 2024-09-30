@@ -356,6 +356,9 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 		workarea.setSize(400,300);
 		JScrollPane jscp = new JScrollPane(workarea);
 		JSplitPane jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jscp, typearea);
+		//jsp.setResizeWeight(0.9);
+	        //jsp.setDividerLocation(0.5);
+		jsp.setDividerLocation(500);
 		getContentPane().add("Center", jsp);
 	}
 	public void switchTo(MUDRemote root) {
@@ -984,15 +987,31 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 				System.err.println("Launching web browser for "+o.get(PROP_LABEL)+".");
 				String cs = o.get(PROP_COLLABORATIONSERVER);
 				System.err.println(PROP_COLLABORATIONSERVER+":"+cs);
-				String sn = URLEncoder.encode(o.get(PROP_SESSIONNAME));
+
+				String sn = o.get(PROP_SESSIONNAME);
+				if (sn != null) {
+					sn = URLEncoder.encode(sn);
+				}
 				System.err.println(PROP_SESSIONNAME+":"+sn);
-				String pwd = URLEncoder.encode(o.get(PROP_SESSIONPASSWORD));
+
+				String pwd = o.get(PROP_SESSIONPASSWORD);
+				if (pwd != null) {
+					pwd = URLEncoder.encode(pwd);
+				}
 				System.err.println(PROP_SESSIONPASSWORD+":"+pwd);
-				String ws = URLEncoder.encode(o.get(PROP_WEBSOCKET));
+
+				String ws = o.get(PROP_WEBSOCKET);
+				if (ws != null) {
+					ws = URLEncoder.encode(ws);
+				}
 				System.err.println(PROP_WEBSOCKET+":"+ws);
-				driver.get(cs+"/"+sn+"/"+pwd+"/"+ws);
+
+				String url = cs+"/"+sn+"/"+pwd+"/"+ws;
+				System.err.println("url:"+url);
+				driver.get(url);
+
 			} catch (Exception re) {
-				System.err.println("Cannot send Edge web browser to collaboration site.  Need:  "+PROP_COLLABORATIONSERVER+", "+PROP_SESSIONNAME+", "+PROP_WEBSOCKET+", and "+PROP_SESSIONPASSWORD);
+				System.err.println("Cannot send Chrome web browser to collaboration site.  Need:  "+PROP_COLLABORATIONSERVER+", "+PROP_SESSIONNAME+", "+PROP_WEBSOCKET+", and "+PROP_SESSIONPASSWORD);
 				re.printStackTrace(System.err);
 			}
 		}
