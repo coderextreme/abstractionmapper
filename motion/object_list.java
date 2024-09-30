@@ -111,6 +111,36 @@ class object_list extends Hashtable {
 			System.err.println("Couldn't load from "+filename);
 		}
 	}
+	public MapRemote objectFromPropertyFile(String filename, String objectkey) {
+		try {
+			MapRemote mr = new HashtableRemote("rmi://localhost/ht", "ht");
+			BufferedReader bf = new BufferedReader(new FileReader(filename));
+			String buf = null;
+			while ((buf = bf.readLine()) != null) {
+				StringTokenizer st = new StringTokenizer(buf, "=");
+				String name = st.nextToken();
+				String value = st.nextToken();
+				createObjectAttributeValue(objectkey.intern(), name, value);
+				Hashtable attrs = (Hashtable)mr.get(objectkey.intern());
+				if (attrs == null) {
+					attrs = new Hashtable();
+				}
+				ArrayList values = (ArrayList)attrs.get(name);
+				if (values == null) {
+					values = new ArrayList();
+				}
+				values.add(value);
+				attrs.put(name, values);
+				System.err.println(objectkey.intern()+"\t"+name+"="+value+" size "+values.size());
+				mr.put(objectkey.intern(), attrs);
+			}
+			return mr;
+		} catch (Exception e) {
+			e.printStackTrace(System.err);
+			System.err.println("Couldn't load from "+filename);
+		}
+		return null;
+	}
 	public void createObjectAttributeValue(String objectkey, String name, String value) throws RemoteException {
 		try {
 			int parsedint = Integer.parseInt(objectkey);

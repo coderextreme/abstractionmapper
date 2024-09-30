@@ -28,6 +28,7 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 , DropTargetListener
 */
 {
+	public static final String PROP_A		= "a";  // multiple selection
 	public static final String PROP_X		= "x";
 	public static final String PROP_Y		= "y";
 	public static final String PROP_ORIG_X		= "orig_x";
@@ -45,6 +46,7 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	public static final String PROP_VISIBLE		= "visible";
 	public static final String PROP_CHILD		= "child";
 	public static final String PROP_PARENT		= "parent";
+	public static final String PROP_PROPERTYFILE	= "property_file";
 	public static final String PROP_RELATIONSHIP	= "relationship";
 	public static final String PROP_OPERATION	= "move";
 	public static final String PROP_ORDER		= "order";
@@ -1072,6 +1074,12 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 						b.repaint();
 					} else if (ae.getActionCommand().equals("Apply")) {
 						apply(objp, jc);
+					} else if (ae.getActionCommand().equals("Load PropertyFile")) {
+						MUDRemote bo = (MUDRemote)jc.getClientProperty("object");
+						loadPropertyFile(bo, b);
+						b.invalidate();
+						b.validate();
+						b.repaint();
 					} else if (ae.getActionCommand().equals("Dismiss")) {
 						this.setVisible(false);
 					} else if (ae.getActionCommand().equals("Add")) {
@@ -1109,7 +1117,10 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 			diag.getContentPane().removeAll();
 			Panel p = new Panel();
 			p.setLayout(new FlowLayout());
-			Button b = new Button("Apply");
+			Button b = new Button("Load Property File");
+			b.addActionListener(diag);
+			p.add(b);
+			b = new Button("Apply");
 			b.addActionListener(diag);
 			p.add(b);
 			b = new Button("Reset");
@@ -1474,6 +1485,18 @@ class MoveAction implements ActionListener {
 		blue = Integer.parseInt(bcs);
 
 		return new Color(red, green, blue);
+	}
+	void
+	loadPropertyFile(MUDRemote objp, Box b)
+	{
+		try {
+			String pf = objp.get(PROP_PROPERTYFILE);
+			System.err.println(PROP_PROPERTYFILE+" "+objp.id()+":"+pf);
+			OBJECT_LIST.objectFromPropertyFile(pf, objp.id());
+			add_props(objp, b);
+		} catch (RemoteException e) {
+			e.printStackTrace(System.err);
+		}
 	}
 }
 class SaveAction implements ActionListener {
