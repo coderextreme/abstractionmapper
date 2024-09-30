@@ -113,10 +113,13 @@ class object_list extends Hashtable {
 	}
 	public MapRemote objectFromPropertyFile(String filename, String objectkey) {
 		try {
+			File file = new File(filename);
+			System.err.println("Reading "+objectkey+" from "+file.getAbsolutePath());
 			MapRemote mr = new HashtableRemote("rmi://localhost/ht", "ht");
-			BufferedReader bf = new BufferedReader(new FileReader(filename));
+			BufferedReader bf = new BufferedReader(new FileReader(file));
 			String buf = null;
 			while ((buf = bf.readLine()) != null) {
+				System.err.println(buf);
 				StringTokenizer st = new StringTokenizer(buf, "=");
 				String name = st.nextToken();
 				String value = st.nextToken();

@@ -53,8 +53,8 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	public static final String PROP_HEAD		= "head";
 	public static final String PROP_TAIL		= "tail";
 	public static final String PROP_COLLABORATIONSERVER = "CollaborationServer";
-	public static final String PROP_SESSIONNAME	= "SessionName";
-	public static final String PROP_SESSIONPASSWORD	= "SessionPassword";
+	public static final String PROP_SESSIONNAME	= "s";
+	public static final String PROP_SESSIONPASSWORD	= "o";
 	public static final String PROP_WEBSOCKET	= "WebSocket";
 	public static final String VALUE_FIRST		= "first";
 	public static final String VALUE_MIDDLE		= "middle";
@@ -1065,6 +1065,11 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 				}
 				
 				public void actionPerformed(ActionEvent ae) {
+					try {
+						System.err.println("\t"+objp.id()+":"+ae.getActionCommand());
+					} catch (RemoteException re) {
+						System.err.println("\tXXXX:"+ae.getActionCommand());
+					}
 					if (ae.getActionCommand().equals("Reset")) {
 						b.removeAll();
 						add_props(objp, b);
@@ -1074,9 +1079,8 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 						b.repaint();
 					} else if (ae.getActionCommand().equals("Apply")) {
 						apply(objp, jc);
-					} else if (ae.getActionCommand().equals("Load PropertyFile")) {
-						MUDRemote bo = (MUDRemote)jc.getClientProperty("object");
-						loadPropertyFile(bo, b);
+					} else if (ae.getActionCommand().equals("Load Property File")) {
+						loadPropertyFile(objp, b);
 						b.invalidate();
 						b.validate();
 						b.repaint();
@@ -1491,7 +1495,7 @@ class MoveAction implements ActionListener {
 	{
 		try {
 			String pf = objp.get(PROP_PROPERTYFILE);
-			System.err.println(PROP_PROPERTYFILE+" "+objp.id()+":"+pf);
+			System.err.println("\t"+PROP_PROPERTYFILE+" "+objp.id()+":"+pf);
 			OBJECT_LIST.objectFromPropertyFile(pf, objp.id());
 			add_props(objp, b);
 		} catch (RemoteException e) {
