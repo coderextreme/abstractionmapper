@@ -1100,9 +1100,9 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 						apply(objp, jc);
 					} else if (ae.getActionCommand().equals("Load Property File")) {
 						loadPropertyFile(objp, b);
-						b.invalidate();
-						b.validate();
-						b.repaint();
+						add_props(objp, b);
+						apply(objp, jc);
+						this.pack();
 					} else if (ae.getActionCommand().equals("Dismiss")) {
 						this.setVisible(false);
 					} else if (ae.getActionCommand().equals("Add")) {
@@ -1516,7 +1516,6 @@ class MoveAction implements ActionListener {
 			String pf = objp.get(PROP_PROPERTYFILE);
 			System.err.println("\t"+PROP_PROPERTYFILE+" "+objp.id()+":"+pf);
 			OBJECT_LIST.objectFromPropertyFile(pf, objp.id());
-			add_props(objp, b);
 		} catch (RemoteException e) {
 			e.printStackTrace(System.err);
 		}
