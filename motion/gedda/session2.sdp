@@ -1,0 +1,11 @@
+v=0
+o=yottzumm 123456789 123459999 IN IP4 lc-soc-lc.at
+s=yottzumm
+c=IN IP4 lc-soc-lc.at
+t=3456677 5678899
+m=application 8443 TCP/WSS/C3P *
+a=setup:passive
+a=connection:new
+a=websocket-uri:wss://lc-soc-lc.at:8443/yottzumm/123456789
+a=c3p-object:obj1
+a=c3p-object:obj2

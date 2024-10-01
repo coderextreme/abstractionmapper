@@ -1101,7 +1101,7 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 					} else if (ae.getActionCommand().equals("Load Property File")) {
 						loadPropertyFile(objp, b);
 						add_props(objp, b);
-						apply(objp, jc);
+						// apply(objp, jc);
 						this.pack();
 					} else if (ae.getActionCommand().equals("Dismiss")) {
 						this.setVisible(false);
