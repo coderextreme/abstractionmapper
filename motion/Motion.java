@@ -54,7 +54,7 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	public static final String PROP_TAIL		= "tail";
 	public static final String PROP_COLLABORATIONSERVER = "CollaborationServer";
 	public static final String PROP_SESSIONNAME	= "s";
-	public static final String PROP_SESSIONPASSWORD	= "o";
+	public static final String PROP_SESSIONTOKEN	= "o";
 	public static final String PROP_WEBSOCKET	= "WebSocket";
 	public static final String VALUE_FIRST		= "first";
 	public static final String VALUE_MIDDLE		= "middle";
@@ -98,6 +98,7 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	static JFrame bigdesk = new JFrame("Desktop");
 	static MetaMotion mm = null;
 	static MContainer con = null;
+	private static WebDriver driver = null;
 
 	public static void init() {
 	    try {
@@ -151,6 +152,10 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 
 		bigdesk.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {
+				if (Motion.driver != null) {
+					Motion.driver.quit();
+					Motion.driver = null;
+				}
 				System.exit(0);
 			}
 		});
@@ -526,6 +531,10 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 		num_frames--;
 		System.out.println("closing "+num_frames);
 		if (num_frames == 0) {
+			if (Motion.driver != null) {
+				Motion.driver.quit();
+				Motion.driver = null;
+			}
 			System.exit(0);
 		}
 	    } catch (RemoteException re) {
@@ -970,50 +979,63 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 
 
 	public void launch() {
-		WebDriver driver = new ChromeDriver();
+		if (Motion.driver != null) {
+			Motion.driver.quit();
+			Motion.driver = null;
+		}
+		Motion.driver = new ChromeDriver();
 		System.err.println("Driver is "+driver.getClass().getName());
-		for (Enumeration e = selected.elements();
-				e != null && e.hasMoreElements(); ) {
-			System.err.println("Found a selected object.");
-			JComponent jc = (JComponent)e.nextElement();
-			MUDRemote o = (MUDRemote)jc.getClientProperty("object");
-			if (o == null) {
-				System.err.println("Remote object property is null.  OOPS!");
-				continue;
-			} else {
-				System.err.println("Found an object property!");
-			}
-			try {
+		try {
+			String cs = "";
+			String ws = "";
+			String sn = "";
+			String to = "";
+			ArrayList sns = new ArrayList();
+			ArrayList tos = new ArrayList();
+			for (Enumeration e = selected.elements();
+					e != null && e.hasMoreElements(); ) {
+				System.err.println("Found a selected object.");
+				JComponent jc = (JComponent)e.nextElement();
+				MUDRemote o = (MUDRemote)jc.getClientProperty("object");
+				if (o == null) {
+					System.err.println("Remote object property is null.  OOPS!");
+					continue;
+				} else {
+					System.err.println("Found an object property!");
+				}
 				System.err.println("Launching web browser for "+o.get(PROP_LABEL)+".");
-				String cs = o.get(PROP_COLLABORATIONSERVER);
+				cs = o.get(PROP_COLLABORATIONSERVER);
 				System.err.println(PROP_COLLABORATIONSERVER+":"+cs);
 
-				String sn = o.get(PROP_SESSIONNAME);
+				sn = o.get(PROP_SESSIONNAME);
 				if (sn != null) {
 					sn = URLEncoder.encode(sn);
+					sns.add(sn);
 				}
 				System.err.println(PROP_SESSIONNAME+":"+sn);
 
-				String pwd = o.get(PROP_SESSIONPASSWORD);
-				if (pwd != null) {
-					pwd = URLEncoder.encode(pwd);
+				to = o.get(PROP_SESSIONTOKEN);
+				if (to != null) {
+					to = URLEncoder.encode(to);
+					tos.add(to);
 				}
-				System.err.println(PROP_SESSIONPASSWORD+":"+pwd);
+				System.err.println(PROP_SESSIONTOKEN+":"+to);
 
-				String ws = o.get(PROP_WEBSOCKET);
+				ws = o.get(PROP_WEBSOCKET);
 				if (ws != null) {
 					ws = URLEncoder.encode(ws);
 				}
 				System.err.println(PROP_WEBSOCKET+":"+ws);
 
-				String url = cs+"/"+sn+"/"+pwd+"/"+ws;
-				System.err.println("url:"+url);
-				driver.get(url);
-
-			} catch (Exception re) {
-				System.err.println("Cannot send Chrome web browser to collaboration site.  Need:  "+PROP_COLLABORATIONSERVER+", "+PROP_SESSIONNAME+", "+PROP_WEBSOCKET+", and "+PROP_SESSIONPASSWORD);
-				re.printStackTrace(System.err);
 			}
+			sn = String.join(":", sns);
+			to = String.join(":", tos);
+			String url = cs+"/"+sn+"/"+to+"/"+ws;
+			System.err.println("url:"+url);
+			driver.get(url);
+		} catch (Exception re) {
+			System.err.println("Cannot send Chrome web browser to collaboration site.  Need:  "+PROP_COLLABORATIONSERVER+", "+PROP_SESSIONNAME+", "+PROP_WEBSOCKET+", and "+PROP_SESSIONTOKEN);
+			re.printStackTrace(System.err);
 		}
 	}
 	public void copy() {
