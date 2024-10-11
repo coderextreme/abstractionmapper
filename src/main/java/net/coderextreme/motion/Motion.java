@@ -33,12 +33,17 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	public static final String PROP_A		= "a";  // multiple selection
 	public static final String PROP_X		= "x";
 	public static final String PROP_Y		= "y";
+	public static final String PROP_WINDOW_X	= "window_x";
+	public static final String PROP_WINDOW_Y	= "window_y";
 	public static final String PROP_ORIG_X		= "orig_x";
 	public static final String PROP_ORIG_Y		= "orig_y";
 	public static final String PROP_EVENT_X		= "event_x";
 	public static final String PROP_EVENT_Y		= "event_y";
 	public static final String PROP_WIDTH		= "width";
 	public static final String PROP_HEIGHT		= "height";
+	public static final String PROP_ICON_WIDTH	= "icon_width";
+	public static final String PROP_ICON_HEIGHT	= "icon_height";
+	public static final String PROP_ICON_DIRTY	= "icon_dirty";
 	public static final String PROP_BACKGROUND	= "bitmap";
 	public static final String PROP_ICON		= "icon";
 	public static final String PROP_LABEL		= "label";
@@ -88,6 +93,7 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	transient JLayeredPane workarea;
 	transient MUDClient typearea;
 	static public object_list OBJECT_LIST = null;
+	protected static File lastDirectory = null;
 	private Vector relationships = new Vector();
 	static Hashtable icons = new Hashtable();
 	MUDRemote root;
@@ -198,15 +204,29 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	public void setUpObject(MUDRemote bo, boolean add_rel) {
 	    try {
 		ImageIcon ii = loadIcon(bo);
-		JLabel lab = new JLabel(bo.get(PROP_LABEL), ii, SwingConstants.CENTER);
+		String idstr = "";
+		try {
+			Integer.parseInt(bo.id());
+			idstr = "#"+bo.id();
+		} catch (Exception e) {
+		}
+		JLabel lab = new JLabel(bo.get(PROP_LABEL)+idstr, ii, SwingConstants.CENTER);
 		lab.setVerticalTextPosition(SwingConstants.CENTER);
 		lab.setHorizontalTextPosition(SwingConstants.CENTER);
 		lab.setForeground(getFgColor(bo.get(PROP_FG_COLOR)));
 		BrowseObject bo2 = new BrowseObject(this);
 		bo2.setComponent(lab);
-		lab.setBounds(bo.getInt(PROP_X), bo.getInt(PROP_Y),
+		if (bo.getInt(PROP_ICON_DIRTY) == 0) {
+			lab.setBounds(bo.getInt(PROP_X),
+				bo.getInt(PROP_Y),
 				ii.getIconWidth(),
 				ii.getIconHeight());
+		} else {
+			lab.setBounds(bo.getInt(PROP_X),
+				bo.getInt(PROP_Y),
+				bo.getInt(PROP_ICON_WIDTH),
+				bo.getInt(PROP_ICON_HEIGHT));
+		}
 		((MUDObject)bo).setComponent(lab);
 		// bo.setMotion(this);
 		workarea.add(lab, JLayeredPane.DRAG_LAYER);
@@ -330,8 +350,16 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 		switchTo(root);
 		MUDRemote bo = root;
 		if (bo != null) {
-			int x = bo.getInt(PROP_X);
-			int y = bo.getInt(PROP_Y);
+			int x = bo.getInt(PROP_WINDOW_X);
+			if (x == 0) {
+				x = bo.getInt(PROP_X);
+				bo.putInt(PROP_WINDOW_X, x);
+			}
+			int y = bo.getInt(PROP_WINDOW_Y);
+			if (y == 0) {
+				y = bo.getInt(PROP_Y);
+				bo.putInt(PROP_WINDOW_Y, y);
+			}
 			setLocation(x,y);
 		}
 
@@ -447,6 +475,14 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 		if (subj != null) {
 			int w = subj.getInt(PROP_WIDTH);
 			int h = subj.getInt(PROP_HEIGHT);
+			if (w == 0) {
+				w = 400;
+				subj.putInt(PROP_WIDTH, w);
+			}
+			if (h == 0) {
+				h = 300;
+				subj.putInt(PROP_HEIGHT, h);
+			}
 			setSize(w,h);
 		} else {
 			setSize(48,48);
@@ -814,6 +850,17 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 			}
 		}
 		c.setBounds(x, y, width, height);
+
+		MUDRemote bo = (MUDRemote)c.getClientProperty("object");
+		if (bo != null) {
+			try {
+				bo.putInt(PROP_ICON_WIDTH, width);
+				bo.putInt(PROP_ICON_HEIGHT, height);
+				bo.putInt(PROP_ICON_DIRTY, 1);
+			} catch (RemoteException e) {
+				e.printStackTrace(System.err);
+			}
+		}
 	}
 	public void andSearch(String [] strings) {
 	    try {
@@ -1340,8 +1387,8 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 		MUDRemote bo = (MUDRemote)m.workarea.getClientProperty("object");
 
 		Point p = m.getLocation();
-		bo.putInt(PROP_X, p.x);
-		bo.putInt(PROP_Y, p.y);
+		bo.putInt(PROP_WINDOW_X, p.x);
+		bo.putInt(PROP_WINDOW_Y, p.y);
 	    } catch (RemoteException re) {
 		re.printStackTrace();
 	    }
@@ -1633,19 +1680,33 @@ class MoveAction implements ActionListener {
 	}
 }
 class SaveAction implements ActionListener {
+
 	public void actionPerformed(ActionEvent ae) {
-		Motion.OBJECT_LIST.save_db();
+		JFileChooser fileChooser = new JFileChooser();
+		if (Motion.lastDirectory != null) {
+		    fileChooser.setCurrentDirectory(Motion.lastDirectory);
+		}
+        	int result = fileChooser.showSaveDialog(null);
+        	if (result == JFileChooser.APPROVE_OPTION) {
+            		File selectedFile = fileChooser.getSelectedFile();
+            		Motion.lastDirectory = selectedFile.getParentFile();
+			Motion.OBJECT_LIST.save_db(selectedFile);
+		} else {
+		    System.out.println("File selection canceled.");
+		}
 	}
 }
 
 class OpenAction implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		JFileChooser fileChooser = new JFileChooser();
-
+		if (Motion.lastDirectory != null) {
+		    fileChooser.setCurrentDirectory(Motion.lastDirectory);
+		}
         	int result = fileChooser.showOpenDialog(null);
-
         	if (result == JFileChooser.APPROVE_OPTION) {
             		File selectedFile = fileChooser.getSelectedFile();
+            		Motion.lastDirectory = selectedFile.getParentFile();
 			Motion.OBJECT_LIST = new object_list(selectedFile);
 		} else {
 		    System.out.println("File selection canceled.");

@@ -241,12 +241,12 @@ class object_list extends Hashtable {
 	public MUDRemote find(String i) {
 		return (MUDRemote)get(i);
 	}
-	public void save_db()
+	public void save_db(File file)
 	{
 	   try {
 		MapRemote mr = new HashtableRemote("rmi://localhost/ht", "ht");
 		mr.save();
-		BufferedWriter f = new BufferedWriter(new FileWriter(filename));
+		BufferedWriter f = new BufferedWriter(new FileWriter(file));
 		write_db(f);
 		f.close();
 
