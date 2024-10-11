@@ -20,6 +20,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import com.formdev.flatlaf.FlatLightLaf;
+import java.util.UUID;
 
 public class Motion extends JInternalFrame implements InternalFrameListener,
 		MouseListener, MouseMotionListener, ComponentListener,
@@ -53,6 +54,7 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	public static final String PROP_HEAD		= "head";
 	public static final String PROP_TAIL		= "tail";
 	public static final String PROP_COLLABORATIONSERVER = "CollaborationServer";
+	public static final String PROP_EMAIL_ADDRESS = "EmailAddress";
 	public static final String PROP_SESSIONNAME	= "s";
 	public static final String PROP_SESSIONTOKEN	= "o";
 	public static final String PROP_WEBSOCKET	= "WebSocket";
@@ -300,6 +302,9 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 		jmi = new JMenuItem("Launch Browser Collaboration");
 		jmi.addActionListener(new LaunchAction());
 		edit.add(jmi);
+		jmi = new JMenuItem("Send Gathering Announcement");
+		jmi.addActionListener(new GatheringAction());
+		edit.add(jmi);
 		jmi = new JMenuItem("Run");
 		jmi.addActionListener(new RunAction());
 		edit.add(jmi);
@@ -329,10 +334,10 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 		// for catching keystrokes
 
 		workarea.registerKeyboardAction(
-			new PropsAction(), "Props", KeyStroke.getKeyStroke('p'),
+			new PropsAction(), "Props", KeyStroke.getKeyStroke(KeyEvent.VK_P, 0),
 			JComponent.WHEN_IN_FOCUSED_WINDOW);
 		workarea.registerKeyboardAction(
-			new ViewAction(), "View", KeyStroke.getKeyStroke('o'),
+			new ViewAction(), "View", KeyStroke.getKeyStroke(KeyEvent.VK_O, 0),
 			JComponent.WHEN_IN_FOCUSED_WINDOW);
 		workarea.registerKeyboardAction(new PasteAction(),
 			"Paste", KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK),
@@ -344,16 +349,19 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 			"Cut", KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK),
 			JComponent.WHEN_IN_FOCUSED_WINDOW);
 		workarea.registerKeyboardAction(new RunAction(),	
-			"Act", KeyStroke.getKeyStroke('a'),
+			"Act", KeyStroke.getKeyStroke(KeyEvent.VK_A, 0),
 			JComponent.WHEN_IN_FOCUSED_WINDOW);
 		workarea.registerKeyboardAction(new SaveAction(),
-			"Save", KeyStroke.getKeyStroke('s'),
+			"Save", KeyStroke.getKeyStroke(KeyEvent.VK_S, 0),
 			JComponent.WHEN_IN_FOCUSED_WINDOW);
 		workarea.registerKeyboardAction(new LaunchAction(),
-			"Launch Browser Collaboration", KeyStroke.getKeyStroke('l'),
+			"Launch Browser Collaboration", KeyStroke.getKeyStroke(KeyEvent.VK_L, 0),
+			JComponent.WHEN_IN_FOCUSED_WINDOW);
+		workarea.registerKeyboardAction(new GatheringAction(),
+			"Send Gathering Announcement", KeyStroke.getKeyStroke(KeyEvent.VK_G, 0),
 			JComponent.WHEN_IN_FOCUSED_WINDOW);
 		workarea.registerKeyboardAction(new MoveAction(),
-			"Make a Move Operation", KeyStroke.getKeyStroke('m'),
+			"Make a Move Operation", KeyStroke.getKeyStroke(KeyEvent.VK_M, 0),
 			JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 		// pack();
@@ -978,23 +986,79 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	}
 
 
-	public void launch() {
-		if (Motion.driver != null) {
-			Motion.driver.quit();
-			Motion.driver = null;
+	public void gathering() {
+		UUID gathering_token = UUID.randomUUID();
+		String cs = "";
+		String ws = "";
+		String em = "";
+		String to = "";
+		ArrayList ems = new ArrayList();
+		ArrayList tos = new ArrayList();
+		em = "Host@jsonverse.com";
+		String label = "Unknown";
+		if (em != null) {
+			em = URLEncoder.encode(em);
+			ems.add(em);
 		}
-		Motion.driver = new ChromeDriver();
-		System.err.println("Driver is "+driver.getClass().getName());
-		try {
-			String cs = "";
-			String ws = "";
-			String sn = "";
-			String to = "";
-			ArrayList sns = new ArrayList();
-			ArrayList tos = new ArrayList();
-			for (Enumeration e = selected.elements();
-					e != null && e.hasMoreElements(); ) {
-				System.err.println("Found a selected object.");
+		// first token is token which is delegated from
+		UUID uuid = UUID.randomUUID();
+		to = URLEncoder.encode(uuid.toString());
+		tos.add(to);
+		for (Enumeration e = selected.elements();
+				e != null && e.hasMoreElements(); ) {
+				JComponent jc = (JComponent)e.nextElement();
+			MUDRemote o = (MUDRemote)jc.getClientProperty("object");
+			if (o == null) {
+				System.err.println("Remote object property is null.  OOPS!");
+				continue;
+			} else {
+				System.err.println("Found an object property!");
+				try {
+					label = o.get(PROP_LABEL);
+					System.err.println("Launching web browser for "+o.get(PROP_LABEL)+".");
+					cs = o.get(PROP_COLLABORATIONSERVER);
+					System.err.println(PROP_COLLABORATIONSERVER+":"+cs);
+
+					em = o.get(PROP_EMAIL_ADDRESS);
+					if (em != null) {
+						em = URLEncoder.encode(em);
+						ems.add(em);
+					}
+					System.err.println(PROP_EMAIL_ADDRESS+":"+em);
+
+					// this is the delegate, revocable token
+					uuid = UUID.randomUUID();
+					to = URLEncoder.encode(uuid.toString());
+					tos.add(to);
+
+					ws = o.get(PROP_WEBSOCKET);
+					if (ws != null) {
+						ws = URLEncoder.encode(ws);
+					}
+					System.err.println(PROP_WEBSOCKET+":"+ws);
+				} catch (RemoteException re) {
+					System.err.println("Can't get email address.  Try property "+PROP_EMAIL_ADDRESS+" for "+label);
+					re.printStackTrace(System.err);
+				}
+			}
+		}
+		em = String.join(":", ems);
+		to = String.join(":", tos);
+		String url = cs+"/Gathering/"+em+"/"+to+"/"+ws;
+		System.err.println("url:"+url);
+		browserLaunch(url);
+	}
+	public void launch() {
+		String cs = "";
+		String ws = "";
+		String sn = "";
+		String to = "";
+		ArrayList sns = new ArrayList();
+		ArrayList tos = new ArrayList();
+		for (Enumeration e = selected.elements();
+				e != null && e.hasMoreElements(); ) {
+			System.err.println("Found a selected object.");
+			try {
 				JComponent jc = (JComponent)e.nextElement();
 				MUDRemote o = (MUDRemote)jc.getClientProperty("object");
 				if (o == null) {
@@ -1026,12 +1090,26 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 					ws = URLEncoder.encode(ws);
 				}
 				System.err.println(PROP_WEBSOCKET+":"+ws);
-
+			} catch (RemoteException re) {
+				System.err.println("Need:  "+PROP_COLLABORATIONSERVER+", "+PROP_SESSIONNAME+", "+PROP_WEBSOCKET+", and "+PROP_SESSIONTOKEN);
+				re.printStackTrace(System.err);
 			}
-			sn = String.join(":", sns);
-			to = String.join(":", tos);
-			String url = cs+"/"+sn+"/"+to+"/"+ws;
-			System.err.println("url:"+url);
+
+		}
+		sn = String.join(":", sns);
+		to = String.join(":", tos);
+		String url = cs+"/"+sn+"/"+to+"/"+ws;
+		System.err.println("url:"+url);
+		browserLaunch(url);
+	}
+	public void browserLaunch(String url) {
+		if (Motion.driver != null) {
+			Motion.driver.quit();
+			Motion.driver = null;
+		}
+		Motion.driver = new ChromeDriver();
+		System.err.println("Driver is "+driver.getClass().getName());
+		try {
 			driver.get(url);
 		} catch (Exception re) {
 			System.err.println("Cannot send Chrome web browser to collaboration site.  Need:  "+PROP_COLLABORATIONSERVER+", "+PROP_SESSIONNAME+", "+PROP_WEBSOCKET+", and "+PROP_SESSIONTOKEN);
@@ -1452,6 +1530,12 @@ class CutAction implements ActionListener {
 		cut();
 	}
 }
+class GatheringAction implements ActionListener {
+	public void actionPerformed(ActionEvent ae) {
+		gathering();
+	}
+}
+
 class LaunchAction implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		launch();

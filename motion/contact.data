@@ -18,6 +18,7 @@
 59	m	application 8443 TCP/WSS/C3P *
 59	icon	female.gif
 59	WebSocket	null
+59	EmailAddress	ksappareldesign@gmail.com
 59	c	IN IP4 lc-soc-lc.at
 59	a	c3p-object:obj2
 58	relationship	parental
@@ -29,7 +30,7 @@
 58	label	Christoph Valentin
 58	parent	contactapp_parent
 58	y	52
-58	x	103
+58	x	101
 58	property_file	motion/gedda/session1.sdp
 58	v	0
 58	t	3456677 5678899
@@ -41,6 +42,7 @@
 58	m	application 8443 TCP/WSS/C3P *
 58	icon	male.gif
 58	WebSocket	null
+58	EmailAddress	yottzumm@gmail.com
 58	c	IN IP4 lc-soc-lc.at
 58	a	c3p-object:obj2
 classes_parent	x	133
@@ -90,9 +92,17 @@ base	label	Main Menu
 base	width	299
 base	visible	true
 base	y	504
+connect_relationship	x	319
+connect_relationship	fg	0 0 255
+connect_relationship	label	is connected to
+connect_relationship	parent	relationships_parent
+connect_relationship	icon	connect.gif
+connect_relationship	y	11
+connect_relationship	child	connect_parent
+connect_relationship	relationship	parental
 107	fg	0 0 255
-107	o	yottzumm 123456789 123459999 IN IP4 lc-soc-lc.at
 107	child	group_parent
+107	o	yottzumm 123456789 123459999 IN IP4 lc-soc-lc.at
 107	CollaborationServer	 http://localhost:8088/tapi/template
 107	m	application 8443 TCP/WSS/C3P *
 107	relationship	parental
@@ -107,17 +117,9 @@ base	y	504
 107	v	0
 107	t	3456677 5678899
 107	s	yottzumm
-connect_relationship	x	319
-connect_relationship	fg	0 0 255
-connect_relationship	label	is connected to
-connect_relationship	parent	relationships_parent
-connect_relationship	icon	connect.gif
-connect_relationship	y	11
-connect_relationship	child	connect_parent
-connect_relationship	relationship	parental
 106	fg	0 0 255
-106	o	yottzumm2 123456789 123459999 IN IP4 lc-soc-lc.at
 106	child	group_parent
+106	o	yottzumm2 123456789 123459999 IN IP4 lc-soc-lc.at
 106	CollaborationServer	 http://localhost:8088/tapi/template
 106	m	application 8443 TCP/WSS/C3P *
 106	relationship	parental
@@ -301,8 +303,8 @@ flowsover_relationship	relationship	parental
 75	child	group_parent
 75	label	Bosses
 75	parent	contactapp_parent
-75	y	448
-75	x	990
+75	y	279
+75	x	244
 75	property_file	motion/gedda/session1.sdp
 75	v	0
 75	t	3456677 5678899
@@ -357,12 +359,12 @@ relationships_relationship	label	Relationships
 relationships_relationship	x	126
 relationships_relationship	parent	base
 relationships_relationship	height	645
-contactapp_parent	x	603
-contactapp_parent	height	369
-contactapp_parent	width	668
+contactapp_parent	x	0
+contactapp_parent	height	1018
+contactapp_parent	width	1904
 contactapp_parent	bitmap	background.gif
 contactapp_parent	visible	true
-contactapp_parent	y	40
+contactapp_parent	y	0
 69	parent	59
 69	relationship	connected
 69	child	59
@@ -401,10 +403,10 @@ contactapp_parent	y	40
 63	child	group_parent
 63	visible	true
 63	relationship	parental
-63	y	48
+63	y	121
 63	icon	group.gif
 63	label	Bosses
-63	x	1278
+63	x	229
 63	parent	contactapp_parent
 63	height	342
 62	fg	0 0 255
@@ -433,10 +435,10 @@ contactapp_parent	y	40
 60	child	group_parent
 60	visible	false
 60	relationship	parental
-60	y	407
+60	y	227
 60	icon	group.gif
 60	label	Bosses
-60	x	801
+60	x	142
 60	parent	contactapp_parent
 60	height	472
 site_parent	x	115
