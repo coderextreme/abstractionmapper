@@ -1039,7 +1039,6 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 
 
 	public void gathering() {
-		UUID gathering_token = UUID.randomUUID();
 		String cs = "";
 		String ws = "";
 		String em = "";
@@ -1048,10 +1047,8 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 		ArrayList tos = new ArrayList();
 		em = "Host@jsonverse.com";
 		String label = "Unknown";
-		if (em != null) {
-			em = URLEncoder.encode(em);
-			ems.add(em);
-		}
+		em = URLEncoder.encode(em);
+		ems.add(em);
 		// first token is token which is delegated from
 		UUID uuid = UUID.randomUUID();
 		to = URLEncoder.encode(uuid.toString());
@@ -1067,7 +1064,7 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 				System.err.println("Found an object property!");
 				try {
 					label = o.get(PROP_LABEL);
-					System.err.println("Launching web browser for "+o.get(PROP_LABEL)+".");
+					System.err.println("Launching web browser for "+label+".");
 					cs = o.get(PROP_COLLABORATIONSERVER);
 					System.err.println(PROP_COLLABORATIONSERVER+":"+cs);
 
@@ -1079,8 +1076,8 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 					System.err.println(PROP_EMAIL_ADDRESS+":"+em);
 
 					// this is the delegate, revocable token
-					uuid = UUID.randomUUID();
-					to = URLEncoder.encode(uuid.toString());
+					UUID uuiddel = UUID.randomUUID();
+					to = URLEncoder.encode(uuiddel.toString());
 					tos.add(to);
 
 					ws = o.get(PROP_WEBSOCKET);
