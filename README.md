@@ -7,9 +7,10 @@ Gedda was the original, then ICBM was developed, then Motion (metadata search) w
 
 First install maven, set JAVA_HOME, then run:
 ```
-mvn clean javafx:run
+bash ./contacts.sh
 ```
 
+```
 You may see errors, and this code is very pre-alpha quality
 Checkout these special properties, per object
 PROP_A		= "a";  // multiple selection
@@ -18,3 +19,4 @@ PROP_SESSIONNAME	= "s"; // Session/Group name for JSONverse.
 PROP_SESSIONPASSWORD	= "o"; // password/token for JSONverse
 PROP_WEBSOCKET	= "WebSocket"; // web socket fro collaboration server for JSONverse (often null)
 PROP_PROPERTYFILE	= "property_file"; // file name to load session descriptions from (SDs), for a, o, and s above.
+```
