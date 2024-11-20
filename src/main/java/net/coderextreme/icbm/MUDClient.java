@@ -31,6 +31,8 @@ import javax.swing.text.*;
 import javax.swing.text.html.*;
 import javax.swing.event.*;
 import java.rmi.registry.*;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import com.formdev.flatlaf.*;
 
 class NickPrompt implements ActionListener {
@@ -108,10 +110,8 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 	}
 	public void startMainFrame() {
 		try {
-			if (!InetAddress.getLocalHost().getHostName().equals("yottzumm")) {
-				rmi = Runtime.getRuntime().exec(System.getProperty("java.home")+File.separator+"bin"+File.separator+"rmiregistry 1099");
-				Thread.sleep(2000);
-			}
+			Registry registry = LocateRegistry.createRegistry(1099);
+                        System.out.println("RMI registry started on port 1099");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

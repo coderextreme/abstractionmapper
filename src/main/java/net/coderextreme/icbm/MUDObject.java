@@ -26,7 +26,8 @@ import java.lang.Thread;
 import java.rmi.*;
 import javax.swing.*;
 import java.rmi.server.*;
-import java.rmi.registry.*;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 // class for all objects in the mud which aren't actual players
 public class MUDObject implements MUDRemote, Runnable {

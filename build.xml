@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="abstractionmapper" default="default" basedir=".">
     <description>Builds, tests, and runs the project abstractionmapper.</description>
-    <property name="classpath"     value=".;selenium-java/selenium-devtools-v129-4.25.0.jar;selenium-java/selenium-os-4.25.0.jar;selenium-java/selenium-json-4.25.0.jar;selenium-java/selenium-manager-4.25.0.jar;selenium-java/failsafe-3.3.2.jar;selenium-java/selenium-http-4.25.0.jar;selenium-java/selenium-api-4.25.0.jar;selenium-java/selenium-chrome-driver-4.25.0.jar;selenium-java/selenium-chromium-driver-4.25.0.jar;selenium-java/selenium-edge-driver-4.25.0.jar;selenium-java/selenium-firefox-driver-4.25.0.jar;selenium-java/selenium-ie-driver-4.25.0.jar;selenium-java/selenium-remote-driver-4.25.0.jar;selenium-java/selenium-safari-driver-4.25.0.jar;flatlaf-3.5.1.jar"/>
+    <property name="classpath"     value=".;target/classes;selenium-java/selenium-devtools-v129-4.25.0.jar;selenium-java/selenium-os-4.25.0.jar;selenium-java/selenium-json-4.25.0.jar;selenium-java/selenium-manager-4.25.0.jar;selenium-java/failsafe-3.3.2.jar;selenium-java/selenium-http-4.25.0.jar;selenium-java/selenium-api-4.25.0.jar;selenium-java/selenium-chrome-driver-4.25.0.jar;selenium-java/selenium-chromium-driver-4.25.0.jar;selenium-java/selenium-edge-driver-4.25.0.jar;selenium-java/selenium-firefox-driver-4.25.0.jar;selenium-java/selenium-ie-driver-4.25.0.jar;selenium-java/selenium-remote-driver-4.25.0.jar;selenium-java/selenium-safari-driver-4.25.0.jar;flatlaf-3.5.1.jar"/>
     <property name="fork"     value="true"/>
     <target name="compile"> 
-            <javac srcdir="." classpath="${classpath}">
+            <javac srcdir="." classpath="${classpath}" includeantruntime="false">
 		    <include name="motion/*.java"/>
 		    <include name="dev/*.java"/>
 		    <include name="icbm/*.java"/>
             </javac>
     </target>
     <target name="ICBM" depends="compile"> 
-	    <java classname="icbm.MUDServer" classpath="${classpath}" failonerror="true" fork="${fork}">
+	    <java classname="net.coderextreme.icbm.MUDServer" classpath="${classpath}" failonerror="true" fork="${fork}">
 		    <arg value="ICBM"/>
             </java>
     </target>
     <target name="prop" depends="compile"> 
-	    <java classname="motion.Motion" classpath="${classpath}" failonerror="true" fork="${fork}">
-		    <arg value="motion/prop.data"/>
-		    <arg value="motion/gedda/"/>
+	    <java classname="net.coderextreme.main.App" classpath="${classpath}" failonerror="true" fork="${fork}">
+		    <arg value="src/main/resources/net/coderextreme/motion/prop.data"/>
+		    <arg value="target/classes/net/coderextreme/motion/gedda/"/>
             </java>
     </target>
     <target name="contacts" depends="compile"> 
-	    <java classname="motion.Motion" classpath="${classpath}" failonerror="true" fork="${fork}">
-		    <arg value="motion/contact.data"/>
-		    <arg value="motion/gedda/"/>
+	    <java classname="net.coderextreme.main.App" classpath="${classpath}" failonerror="true" fork="${fork}">
+		    <arg value="src/main/resources/net/coderextreme/motion/contact.data"/>
+		    <arg value="target/classes/net/coderextreme/motion/gedda/"/>
             </java>
     </target>
     <target name="default" depends="contacts"> 
