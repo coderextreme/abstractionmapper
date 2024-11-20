@@ -9,6 +9,10 @@ First install maven, set JAVA_HOME, then run:
 ```
 bash ./contacts.sh
 ```
+or
+```
+bash ./icbmmotion.sh
+```
 
 ```
 You may see errors, and this code is very pre-alpha quality
