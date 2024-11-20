@@ -6,8 +6,8 @@
     <version>1.0.0</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
@@ -107,7 +107,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <release>22</release>
+                    <release>23</release>
 		    <!--
 		    <compilerArgument>-Xlint:unchecked</compilerArgument>
 		    -->
@@ -119,6 +119,7 @@
                 <version>0.0.3</version>
                 <configuration>
                     <mainClass>net.coderextreme.main.App</mainClass>
+		    <commandlineArgs>src/main/resources/net/coderextreme/motion/contact.data target/classes/net/coderextreme/motion/gedda/</commandlineArgs>
                 </configuration>
             </plugin>
         </plugins>

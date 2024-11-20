@@ -23,6 +23,11 @@ or
 mvn clean install
 ant contacts
 ```
+or
+```
+mvn clean javafx:run
+```
+This doesn't currently run JavaFX
 
 ```
 You may see errors, and this code is very pre-alpha quality

@@ -8,10 +8,10 @@ public class MUDServer extends MUDClient {
 	public MUDServer(String args[]) {
 		super();
 		try {
-			Registry registry = LocateRegistry.createRegistry(1099);
-                        System.out.println("RMI registry started on port 1099");
+			rmi = Runtime.getRuntime().exec(System.getProperty("java.home")+File.separator+"bin"+File.separator+"rmiregistry 1099");
+			Thread.sleep(2000);
+			System.out.println("RMI registry started on port 1099");
 		} catch (Exception e) {
-			System.err.println("Exception "+e);
 			e.printStackTrace();
 		}
 		try {

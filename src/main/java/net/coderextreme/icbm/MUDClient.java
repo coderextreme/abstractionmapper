@@ -110,8 +110,11 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 	}
 	public void startMainFrame() {
 		try {
-			Registry registry = LocateRegistry.createRegistry(1099);
-                        System.out.println("RMI registry started on port 1099");
+			if (!InetAddress.getLocalHost().getHostName().equals("yottzumm")) {
+				rmi = Runtime.getRuntime().exec(System.getProperty("java.home")+File.separator+"bin"+File.separator+"rmiregistry 1099");
+				Thread.sleep(2000);
+                        	System.out.println("RMI registry started on port 1099");
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
