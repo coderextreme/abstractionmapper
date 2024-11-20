@@ -98,11 +98,7 @@
 	    <artifactId>flatlaf</artifactId>
 	    <version>3.5.1</version>
 	</dependency>
-	<dependency>
-            <groupId>uk.co.electronstudio.jaylib</groupId>
-            <artifactId>jaylib</artifactId>
-            <version>[5.0.0,5.1)</version>
-        </dependency>
+
     </dependencies>
     <build>
         <plugins>
@@ -122,9 +118,6 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.3</version>
                 <configuration>
-			<!--
-                    <mainClass>net.coderextreme.assets.Main</mainClass>
-			    -->
                     <mainClass>net.coderextreme.main.App</mainClass>
 		    <commandlineArgs>src/main/resources/net/coderextreme/motion/contact.data target/classes/net/coderextreme/motion/gedda/</commandlineArgs>
                 </configuration>

@@ -27,7 +27,7 @@ or
 ```
 mvn clean javafx:run
 ```
-This doesn't currently run JavaFX
+This doesn't currently run JavaFX (Note that you won't be able to launch any web browser with selenium using this!
 
 ```
 You may see errors, and this code is very pre-alpha quality
