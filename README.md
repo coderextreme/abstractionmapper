@@ -13,6 +13,16 @@ or
 ```
 bash ./icbmmotion.sh
 ```
+or
+```
+mvn clean install
+ant prop
+```
+or
+```
+mvn clean install
+ant contacts
+```
 
 ```
 You may see errors, and this code is very pre-alpha quality
