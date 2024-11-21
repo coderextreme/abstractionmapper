@@ -122,7 +122,8 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 		        try {
 			    // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			    // UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-			    UIManager.setLookAndFeel(new FlatLightLaf());
+			    // UIManager.setLookAndFeel(new FlatLightLaf());
+			    FlatLightLaf.setup();
 			} catch (Exception e) {
 			    e.printStackTrace();
 			}

@@ -114,7 +114,8 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 		try {
 			// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-			UIManager.setLookAndFeel(new FlatLightLaf());
+			//UIManager.setLookAndFeel(new FlatLightLaf());
+			FlatLightLaf.setup();
 		} catch (Exception e) {
 			System.out.println(e);
 		}
