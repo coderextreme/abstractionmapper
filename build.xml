@@ -27,11 +27,13 @@
 	</exec>
     </target>
 
+    <!--
     <target name="ICBM" depends="compile"> 
 	    <java classname="net.coderextreme.icbm.MUDServer" classpath="${classpath}" failonerror="true" fork="${fork}">
 		    <arg value="ICBM"/>
             </java>
     </target>
+    -->
     <target name="prop" depends="compile"> 
 	    <java classname="net.coderextreme.main.App" classpath="${classpath}" failonerror="true" fork="${fork}">
 		    <arg value="src/main/resources/net/coderextreme/motion/prop.data"/>
