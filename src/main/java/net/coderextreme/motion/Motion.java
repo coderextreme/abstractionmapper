@@ -130,7 +130,7 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 		re.printStackTrace();
 	    }
 	}
-	public static void main (String argv[]) {
+	public static void main(String argv[]) {
 		if (argv.length > 0) {
 			String path = new File(argv[0]).getAbsolutePath();
 			OBJECT_LIST = new object_list(path);

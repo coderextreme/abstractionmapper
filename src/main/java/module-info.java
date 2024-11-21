@@ -16,4 +16,5 @@ module net.coderextreme {
     exports net.coderextreme.icbm;
     exports net.coderextreme.main;
     exports net.coderextreme.motion;
+    exports org.openjfx;
 }
