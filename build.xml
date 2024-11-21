@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="abstractionmapper" default="default" basedir=".">
     <description>Builds, tests, and runs the project abstractionmapper.</description>
-    <property name="classpath"     value=".;target/classes;selenium-java/selenium-devtools-v130-4.26.0.jar;selenium-java/selenium-os-4.26.0.jar;selenium-java/selenium-json-4.26.0.jar;selenium-java/selenium-manager-4.26.0.jar;selenium-java/failsafe-3.3.2.jar;selenium-java/selenium-http-4.26.0.jar;selenium-java/selenium-api-4.26.0.jar;selenium-java/selenium-chrome-driver-4.26.0.jar;selenium-java/selenium-chromium-driver-4.26.0.jar;selenium-java/selenium-edge-driver-4.26.0.jar;selenium-java/selenium-firefox-driver-4.26.0.jar;selenium-java/selenium-ie-driver-4.26.0.jar;selenium-java/selenium-remote-driver-4.26.0.jar;selenium-java/selenium-safari-driver-4.26.0.jar;flatlaf-3.5.1.jar"/>
+
+    <property name="classpath"     value=".:target/abstractionmapper-1.0.0.jar:target/classes:selenium-java/selenium-devtools-v130-4.26.0.jar:selenium-java/selenium-os-4.26.0.jar:selenium-java/selenium-json-4.26.0.jar:selenium-java/selenium-manager-4.26.0.jar:selenium-java/failsafe-3.3.2.jar:selenium-java/selenium-http-4.26.0.jar:selenium-java/selenium-api-4.26.0.jar:selenium-java/selenium-chrome-driver-4.26.0.jar:selenium-java/selenium-chromium-driver-4.26.0.jar:selenium-java/selenium-edge-driver-4.26.0.jar:selenium-java/selenium-firefox-driver-4.26.0.jar:selenium-java/selenium-ie-driver-4.26.0.jar:selenium-java/selenium-remote-driver-4.26.0.jar:selenium-java/selenium-safari-driver-4.26.0.jar:flatlaf-3.5.1.jar"/>
     <property name="fork"     value="true"/>
-    <target name="compile"> 
-            <javac srcdir="." classpath="${classpath}" includeantruntime="false">
-		    <include name="motion/*.java"/>
-		    <include name="dev/*.java"/>
-		    <include name="icbm/*.java"/>
-            </javac>
+
+    <condition property="isWindows">
+    	<os family="windows" />
+    </condition>
+
+    <condition property="isUnix">
+    	<os family="unix" />
+    </condition>
+
+    <target name="compile" depends="mvn_windows, mvn_unix"/>
+
+    <target name="mvn_windows" if="isWindows">
+	<exec dir="." executable="cmd">
+	    <arg line="/c mvn clean install" />
+	</exec>
     </target>
+
+    <target name="mvn_unix" if="isUnix">
+	<exec dir="." executable="sh">
+	    <arg line="-c 'mvn clean install'" />
+	</exec>
+    </target>
+
     <target name="ICBM" depends="compile"> 
 	    <java classname="net.coderextreme.icbm.MUDServer" classpath="${classpath}" failonerror="true" fork="${fork}">
 		    <arg value="ICBM"/>

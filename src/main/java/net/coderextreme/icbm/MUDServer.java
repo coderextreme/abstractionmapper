@@ -9,7 +9,7 @@ public class MUDServer extends MUDClient {
 		super();
 		try {
 			rmi = Runtime.getRuntime().exec(System.getProperty("java.home")+File.separator+"bin"+File.separator+"rmiregistry 1099");
-			Thread.sleep(2000);
+			Thread.sleep(3000);
 			System.out.println("RMI registry started on port 1099");
 		} catch (Exception e) {
 			e.printStackTrace();
