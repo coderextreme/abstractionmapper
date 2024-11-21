@@ -19,73 +19,73 @@
             <groupId>org.seleniumhq.selenium</groupId>
 
 	    <artifactId>selenium-devtools-v129</artifactId>
-            <version>4.25.0</version>
+            <version>4.26.0</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
 	    <artifactId>selenium-os</artifactId>
 
-            <version>4.25.0</version>
+            <version>4.26.0</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
 	    <artifactId>selenium-json</artifactId>
-            <version>4.25.0</version>
+            <version>4.26.0</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
 	    <artifactId>selenium-manager</artifactId>
-            <version>4.25.0</version>
+            <version>4.26.0</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
 	    <artifactId>selenium-http</artifactId>
-            <version>4.25.0</version>
+            <version>4.26.0</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
 	    <artifactId>selenium-api</artifactId>
-            <version>4.25.0</version>
+            <version>4.26.0</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
 	    <artifactId>selenium-chrome-driver</artifactId>
-            <version>4.25.0</version>
+            <version>4.26.0</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
 	    <artifactId>selenium-chromium-driver</artifactId>
-            <version>4.25.0</version>
+            <version>4.26.0</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
 	    <artifactId>selenium-edge-driver</artifactId>
-            <version>4.25.0</version>
+            <version>4.26.0</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
 	    <artifactId>selenium-firefox-driver</artifactId>
-            <version>4.25.0</version>
+            <version>4.26.0</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
 	    <artifactId>selenium-ie-driver</artifactId>
-            <version>4.25.0</version>
+            <version>4.26.0</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
 	    <artifactId>selenium-remote-driver</artifactId>
-            <version>4.25.0</version>
+            <version>4.26.0</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
 	    <artifactId>selenium-safari-driver</artifactId>
-            <version>4.25.0</version>
+            <version>4.26.0</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
 	    <artifactId>selenium-support</artifactId>
-            <version>4.25.0</version>
+            <version>4.26.0</version>
         </dependency>
 	<dependency>
 	    <groupId>dev.failsafe</groupId>
