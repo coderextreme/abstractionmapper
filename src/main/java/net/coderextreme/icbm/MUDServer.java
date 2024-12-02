@@ -1,6 +1,8 @@
 package net.coderextreme.icbm;
 
 import java.io.File;
+import java.io.IOException;
+import java.rmi.RemoteException;
 
 public class MUDServer extends MUDClient {
 	public MUDServer(String args[]) {
@@ -9,8 +11,8 @@ public class MUDServer extends MUDClient {
 			rmi = Runtime.getRuntime().exec(new String[] { System.getProperty("java.home")+File.separator+"bin"+File.separator+"rmiregistry", "1099" });
 			Thread.sleep(3000);
 			System.out.println("RMI registry started on port 1099");
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace(System.err);
 		}
 		try {
 			MUDRemote room = new MUDRoom("Generic_Room");
@@ -24,9 +26,9 @@ public class MUDServer extends MUDClient {
 			MUDRemote base = new Base("base");
 			Thread.sleep(1);
 			MUDClient.main(args);
-		} catch (Exception e) {
+		} catch (InterruptedException | RemoteException e) {
 			System.err.println("Exception "+e);
-			e.printStackTrace();
+			e.printStackTrace(System.err);
 		}
 	}
 	public static void main(String args[]) {

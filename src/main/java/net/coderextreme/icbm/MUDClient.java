@@ -18,28 +18,41 @@ package net.coderextreme.icbm;
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-import java.net.*;
-import java.io.*;
-import java.lang.*;
-import java.util.*;
-import java.rmi.*;
-import java.applet.*;
-import java.awt.event.*;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.text.html.*;
-import javax.swing.event.*;
-import java.rmi.registry.*;
+import java.awt.BorderLayout;
+import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import com.formdev.flatlaf.*;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Vector;
+
+import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.text.DefaultCaret;
+
+import com.formdev.flatlaf.FlatLightLaf;
 
 class NickPrompt implements ActionListener {
 	JFrame jf = new JFrame("Enter nick:");
 	JTextField jtf = new JTextField(15);
 	MUDClient mudc = null;
-	public void commonInit() {
+	private void commonInit() {
 		jf.getContentPane().add(jtf);
 		jtf.addActionListener(this);
 		jf.pack();
@@ -53,6 +66,7 @@ class NickPrompt implements ActionListener {
 		this.mudc = mudc;
 		commonInit();
 	}
+	@Override
 	public void actionPerformed(ActionEvent ae) {
 		mudc.setNick(jtf.getText());
 		mudc.startMainFrame();
@@ -69,7 +83,7 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 	String room = "rmi://localhost/Generic_Room";
 	StringBuffer html = new StringBuffer("<html><head><title>ICBM</title></head><body><h1>Start Chatting</h1><h2>Type /home to orient yourself</h2></body></html>");
 	// String cookie = System.getProperty("LTERM_COOKIE");
-	Vector history = new Vector();
+	Vector<Object> history = new Vector<>();
 	int current = 0;
 	static protected Process rmi = null;
 	JPanel rooms;
@@ -87,22 +101,22 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		try {
 			LocateRegistry.getRegistry();
-		} catch (Exception e) {
+		} catch (IOException e) {
+			e.printStackTrace(System.err);
 		}
 	}
-	boolean odd = false;
 	public void switchTo(MUDRemote mr) {
 	    try {
 		Enumeration e1 = mc.environment().elements();
 		while (e1 != null && e1.hasMoreElements()) {
 			ParentItem pi = (ParentItem)e1.nextElement();
-			MUDRemote room = pi.object();
-			mc.remove(room);
+			MUDRemote r = pi.object();
+			mc.remove(r);
 		}
 		System.err.println("Looking up "+mr.getName());
 		mc.add(mr);
-	    } catch (Exception ex) {
-		ex.printStackTrace();
+	    } catch (IOException ex) {
+			ex.printStackTrace(System.err);
 	    }
 	}
 	public static void main (String args[]) {
@@ -111,12 +125,15 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 	public void startMainFrame() {
 		try {
 			if (!InetAddress.getLocalHost().getHostName().equals("yottzumm")) {
-				rmi = Runtime.getRuntime().exec(System.getProperty("java.home")+File.separator+"bin"+File.separator+"rmiregistry 1099");
-				Thread.sleep(2000);
-                        	System.out.println("RMI registry started on port 1099");
+				rmi = Runtime.getRuntime().exec(new String[] {System.getProperty("java.home")+File.separator+"bin"+File.separator+"rmiregistry", "1099"});
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException ie) {
+				}
+				System.out.println("RMI registry started on port 1099");
 			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace(System.err);
 		}
 		try {
 		        try {
@@ -125,26 +142,26 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 			    // UIManager.setLookAndFeel(new FlatLightLaf());
 			    FlatLightLaf.setup();
 			} catch (Exception e) {
-			    e.printStackTrace();
+			    e.printStackTrace(System.err);
 			}
 			init();
 			rooms = new JPanel();
 			BoxLayout bl = new BoxLayout(rooms, BoxLayout.Y_AXIS);
 			rooms.setLayout(bl);
-			JScrollPane jsp = new JScrollPane(rooms);
+			JScrollPane jsp1 = new JScrollPane(rooms);
 			checkConnections();
 
 			JFrame jf = new JFrame(nick);
 			jf.getContentPane().setLayout(new BorderLayout());
 			jf.getContentPane().add("Center", this);
-			jf.getContentPane().add("East", jsp);
+			jf.getContentPane().add("East", jsp1);
 			jf.setLocation(100, 100);
 			jf.setSize(400, 300);
 			jf.setVisible(true);
 			jf.addWindowListener(this);
 			new Thread(mc).start();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (HeadlessException e) {
+			e.printStackTrace(System.err);
 		}
 		if (rmi != null) {
 			rmi.destroy();
@@ -160,6 +177,7 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 			this.mudc = mudc;
 			this.jb = jb;
 		}
+		@Override
 		public void actionPerformed(ActionEvent ae) {
 			room = MUDObject.getProperty(s+".URL");
 			try {
@@ -169,11 +187,11 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 					if (jb.isSelected()) {
 						try {
 							mc.add(mr);
-							Vector comm = new Vector();
-							Vector metoo = new Vector();
+							Vector<Object> comm = new Vector<>();
+							Vector<Object> metoo = new Vector<>();
 							comm.addElement(nick+" enters "+mr.getName());
 							mc.tell_siblings(comm, metoo);
-						} catch (Exception addex) {
+						} catch (RemoteException addex) {
 							System.err.println("Couldn't connect to "+mr+" "+addex.getMessage());
 							jb.setSelected(false);
 						}
@@ -182,12 +200,12 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 					}
 				} else {
 					System.err.println("No where to go!");
-					Vector comm = new Vector();
+					Vector<Object> comm = new Vector<>();
 					comm.addElement(nick+" enters thin air");
 					mc.tell(comm);
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (RemoteException e) {
+				e.printStackTrace(System.err);
 				jb.getParent().remove(jb);
 				checkConnections();
 			}
@@ -197,7 +215,7 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 		rooms.removeAll();
 		Vector v = MUDObject.getNames();
 		Collections.sort(v);
-		Iterator i = v.iterator();
+		Iterator<Object> i = v.iterator();
 		while (i.hasNext()) {
 			String s = i.next().toString();
 			if (s.trim().equals("")) {
@@ -208,6 +226,7 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 			rooms.add(jb);
 		}
 	}
+	@Override
 	public void windowClosing(WindowEvent we) {
 		if (rmi != null) {
 			rmi.destroy();
@@ -215,16 +234,22 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 		}
 		System.exit(0);
 	}
+	@Override
 	public void windowActivated(WindowEvent we) {
 	}
+	@Override
 	public void windowClosed(WindowEvent we) {
 	}
+	@Override
 	public void windowDeactivated(WindowEvent we) {
 	}
+	@Override
 	public void windowDeiconified(WindowEvent we) {
 	}
+	@Override
 	public void windowIconified(WindowEvent we) {
 	}
+	@Override
 	public void windowOpened(WindowEvent we) {
 	}
 	public void addToEnd(String text) {
@@ -241,7 +266,7 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
                     //ta.scrollRectToVisible(r);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(System.err);
 		}
 	    }
 /*
@@ -267,28 +292,29 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 	}
 	public void init() {
 	    try {
-		String url = "rmi://"+InetAddress.getLocalHost().getHostName()+"/"+nick;
-		try {
-			mc = new FromMUD(url, this, ta);
-			// mc.setURL(url);
-		} catch (Exception e) {
-			System.err.println("Exception "+e);
-			e.printStackTrace();
-		}
-		setLayout(new BorderLayout());
-		jsp = new JScrollPane(ta);
-		add("South", tf);
-		add("Center", jsp);
-		history.addElement("");
-		current = history.size();
-		tf.setText("/home");
-		tf.addKeyListener(this);
+			String url = "rmi://"+InetAddress.getLocalHost().getHostName()+"/"+nick;
+			try {
+				mc = new FromMUD(url, this, ta);
+				// mc.setURL(url);
+			} catch (RemoteException e) {
+				System.err.println("Exception "+e);
+				e.printStackTrace(System.err);
+			}
+			setLayout(new BorderLayout());
+			jsp = new JScrollPane(ta);
+			add("South", tf);
+			add("Center", jsp);
+			history.addElement("");
+			current = history.size();
+			tf.setText("/home");
+			tf.addKeyListener(this);
 		tf.addActionListener(this);
-	    } catch (Exception e) {
-		System.err.println("Exception "+e);
-		e.printStackTrace();
+	    } catch (UnknownHostException e) {
+			System.err.println("Exception "+e);
+			e.printStackTrace(System.err);
 	    }
 	}
+	@Override
 	public void actionPerformed(ActionEvent ae) {
 	    InputLine line = new InputLine();
 	    line = line.get_buffer(tf.getText());
@@ -304,7 +330,7 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 		if (current > history.size()) {
 		    current = history.size();
 		}
-		if (history.size() > 0) {
+		if (!history.isEmpty()) {
 			tf.setText(history.elementAt(current-1).toString());
 		}
 	}
@@ -312,10 +338,11 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 		if (current > 1) {
 			current--;
 		}
-		if (history.size() > 0) {
+		if (!history.isEmpty()) {
 			tf.setText(history.elementAt(current-1).toString());
 		}
 	}
+	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
 			previous();
@@ -323,8 +350,10 @@ public class MUDClient extends JPanel implements WindowListener, ActionListener,
 			next();
 		}
 	}
+	@Override
 	public void keyReleased(KeyEvent e) {
 	}
+	@Override
 	public void keyTyped(KeyEvent e) {
 	}
 }

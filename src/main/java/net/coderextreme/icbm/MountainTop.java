@@ -18,22 +18,19 @@ package net.coderextreme.icbm;
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-import java.util.*;
-import java.awt.*;
-import java.net.*;
-import java.io.*;
-import java.lang.Thread;
-import java.rmi.*;
+import java.rmi.RemoteException;
+import java.util.Vector;
 
 public class MountainTop extends MUDRoom {
 	public MountainTop(String n) throws RemoteException
 	{
 		super(n);
 	}
-	public int command(MUDRemote subject, Vector comm)
+	@Override
+	public int command(MUDRemote subject, Vector<Object> comm)
 	    throws RemoteException {
 		String verb = null;
-		if (comm.size() > 0) {
+		if (!comm.isEmpty()) {
 			verb = (String)comm.elementAt(0);
 		} else {
 			return 0;
@@ -49,7 +46,7 @@ public class MountainTop extends MUDRoom {
 			ev = takeExit(getProperty("Valley.URL"), subject);
 		}
 		if (verb.equalsIgnoreCase("/exits")) {
-			Vector v = new Vector(1);
+			Vector<Object> v = new Vector<>(1);
 			v.addElement("/north, /east");
 			ev = subject.tell(v);
 		}

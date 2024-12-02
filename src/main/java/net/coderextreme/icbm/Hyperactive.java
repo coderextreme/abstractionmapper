@@ -18,32 +18,28 @@ package net.coderextreme.icbm;
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-import java.net.*;
-import java.io.*;
-import java.lang.*;
-import java.util.*;
-import java.rmi.*;
-import java.applet.*;
-import java.awt.event.*;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.text.html.*;
-import javax.swing.event.*;
+
+import java.io.IOException;
+
+import javax.swing.JEditorPane;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 
 public class Hyperactive implements HyperlinkListener {
+	@Override
 	public void hyperlinkUpdate(HyperlinkEvent e) {
 		if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 			JEditorPane pane = (JEditorPane) e.getSource();
-			if (e instanceof HTMLFrameHyperlinkEvent) {
-				HTMLFrameHyperlinkEvent  evt = (HTMLFrameHyperlinkEvent)e;
+			if (e instanceof HTMLFrameHyperlinkEvent evt) {
 				HTMLDocument doc = (HTMLDocument)pane.getDocument();
 				doc.processHTMLFrameHyperlinkEvent(evt);
 			} else {
 				try {
 					pane.setPage(e.getURL());
-				} catch (Throwable t) {
-					t.printStackTrace();
+				} catch (IOException ex) {
+					ex.printStackTrace(System.err);
 				}
 			}
 		}

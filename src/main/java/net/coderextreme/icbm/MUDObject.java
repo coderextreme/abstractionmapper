@@ -21,7 +21,9 @@ package net.coderextreme.icbm;
 import java.awt.Component;
 import java.awt.Insets;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.UnmarshalException;
 import java.rmi.registry.LocateRegistry;
@@ -40,19 +42,19 @@ import javax.swing.JTextField;
 
 // class for all objects in the mud which aren't actual players
 public class MUDObject implements MUDRemote, Runnable {
-	private Vector children;   // things a object has in its possession
-	private Vector missing_children;
+	private Vector<Object> children;   // things a object has in its possession
+	private Vector<Object> missing_children;
 
-	private Vector parents;  // things this object is within
-	private Vector missing_parents;
+	private Vector<Object> parents;  // things this object is within
+	private Vector<Object> missing_parents;
 
 	private String name = "Name";
 	private String url;
 	private static Properties settings;
 	private Hashtable aliases = new Hashtable();
-	public static Vector getNames() {
+	public static Vector<Object> getNames() {
 		Enumeration e = settings.propertyNames();
-		Vector rooms = new Vector(settings.size());
+		Vector<Object> rooms = new Vector<>(settings.size());
 		while (e.hasMoreElements()) {
 			String s = e.nextElement().toString();
 			int url = s.indexOf(".URL");
@@ -79,8 +81,8 @@ public class MUDObject implements MUDRemote, Runnable {
 			Registry registry = LocateRegistry.getRegistry(url.substring(pp, eh));
 			MUDRemote stub = (MUDRemote) registry.lookup(url.substring(eh+1));
 			return stub;
-		} catch (Exception conne) {
-			conne.printStackTrace();
+		} catch (NotBoundException | RemoteException conne) {
+			conne.printStackTrace(System.err);
 			System.err.println("Couldn't connect to "+url.substring(pp, eh)+" "+url.substring(eh+1));
 			return null;
 		}
@@ -89,11 +91,11 @@ public class MUDObject implements MUDRemote, Runnable {
 		this();
 		int pp = url.indexOf("//")+2;
 		int eh = url.indexOf("/", pp);
-		children = new Vector();
-		parents = new Vector();
+		children = new Vector<>();
+		parents = new Vector<>();
 
-		missing_children = new Vector();
-		missing_parents = new Vector();
+		missing_children = new Vector<>();
+		missing_parents = new Vector<>();
 		name = url.substring(eh+1);
 		this.url = url;
 		getNetworkPermission();
@@ -107,7 +109,7 @@ public class MUDObject implements MUDRemote, Runnable {
 			registry = LocateRegistry.getRegistry(url.substring(pp, eh));
 		}
 		registry.rebind(name, stub);
-		readAliases();
+		this.readAliases();
 	}
 	public MUDObject() throws RemoteException {
 		super();
@@ -120,29 +122,29 @@ public class MUDObject implements MUDRemote, Runnable {
 				if (is == null) {
 					System.err.println("input stream for properties is null");
 					is = new FileInputStream("src/main/resources/net/coderextreme/dev/objects.properties");
-					if (is == null)  {
-						System.err.println("input stream for properties is null");
-						System.exit(0);
-					}
 				}
 				settings.load(is);
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace(System.err);
 			}
 		}
 		return settings.getProperty(s);
 	}
+    @Override
 	public String getName() {
 		return name;
 	}
+    @Override
 	public void setName(String n) {
 		name = n;
 		readAliases();
 	}
+    @Override
 	public boolean ping() throws RemoteException {
 		return true;
 	}
-	public Vector inventory() {
+    @Override
+	public Vector<Object> inventory() {
 		// System.err.println("Returning inventory on "+getName());
 		int i = 0;
 		while (i < missing_children.size()) {
@@ -162,7 +164,7 @@ public class MUDObject implements MUDRemote, Runnable {
 				} else {
 					i++;
 				}
-			} catch (Exception e) {
+			} catch (RemoteException e) {
 				System.err.println("Exception "+e);
 				i++;
 			}
@@ -184,7 +186,8 @@ public class MUDObject implements MUDRemote, Runnable {
 		}
 		return children;
 	}
-	public Vector environment()
+    @Override
+	public Vector<Object> environment()
 	{
 		// System.err.println("Returning environment on "+getName());
 		int i = 0;
@@ -213,17 +216,19 @@ public class MUDObject implements MUDRemote, Runnable {
 			} catch (UnmarshalException e) {
 				System.err.println("Unmarshal Exception "+e);
 				i++;
-			} catch (Exception e) {
+			} catch (RemoteException e) {
 				System.err.println("Exception "+e);
 				i++;
 			}
 		}
 		return parents;
 	}
+    @Override
 	public MUDRemote nextItem(Enumeration e) throws RemoteException {
 		return ((InventoryItem)e.nextElement()).object();
 	}
-	public int tell_all_children(Vector message, Vector objects_not_to_tell)
+    @Override
+	public int tell_all_children(Vector<Object> message, Vector<Object> objects_not_to_tell)
 		throws RemoteException {
 		// objects like rooms pass messages to inventory items.
 		for (Enumeration e = inventory().elements(); e != null && e.hasMoreElements();) {
@@ -239,8 +244,8 @@ public class MUDObject implements MUDRemote, Runnable {
 		}
 		return 1;
 	}
-
-	public int tell_children(Vector message, Vector objects_not_to_tell)
+    @Override
+	public int tell_children(Vector<Object> message, Vector<Object> objects_not_to_tell)
 		throws RemoteException {
 		// objects like rooms pass messages to inventory items.
 		for (Enumeration e = inventory().elements(); e != null && e.hasMoreElements();) {
@@ -255,7 +260,8 @@ public class MUDObject implements MUDRemote, Runnable {
 		return 1;
 	}
 
-	public int tell_coowners(Vector message, Vector objects_not_to_tell)
+    @Override
+	public int tell_coowners(Vector<Object> message, Vector<Object> objects_not_to_tell)
 		throws RemoteException {
 		// objects like rooms pass messages to inventory items.
 		for (Enumeration e = inventory().elements(); e != null && e.hasMoreElements();) {
@@ -269,14 +275,16 @@ public class MUDObject implements MUDRemote, Runnable {
 		return 1;
 	}
 
+    @Override
 	public MUDRemote nextParent(Enumeration e) throws RemoteException {
 		return ((ParentItem)e.nextElement()).object();
 	}
-	public Vector get_siblings() throws RemoteException {
-		Vector siblings = new Vector();
+    @Override
+	public Vector<Object> get_siblings() throws RemoteException {
+		Vector<Object> siblings = new Vector<>();
 		for (Enumeration e = environment().elements(); e != null && e.hasMoreElements();) {
 			MUDRemote o = nextParent(e);
-			Vector v = o.inventory();
+			Vector<Object> v = o.inventory();
 			for (Enumeration f = v.elements(); f != null && f.hasMoreElements();) {
 				siblings.addElement(nextItem(f));
 			}
@@ -284,9 +292,10 @@ public class MUDObject implements MUDRemote, Runnable {
 		return siblings;
 	}
 
-	public int tell_siblings(Vector message, Vector objects_not_to_tell)
+    @Override
+	public int tell_siblings(Vector<Object> message, Vector<Object> objects_not_to_tell)
 		throws RemoteException {
-		Vector siblings = get_siblings();
+		Vector<Object> siblings = get_siblings();
 		for (Enumeration e = siblings.elements(); e != null && e.hasMoreElements();) {
 			MUDRemote o = (MUDRemote)e.nextElement();
 			if (o != null && !objects_not_to_tell.contains(o)) {
@@ -303,7 +312,8 @@ public class MUDObject implements MUDRemote, Runnable {
 		return 1;
 	}
 
-	public int tell_all_parents(Vector message, Vector objects_not_to_tell)
+    @Override
+	public int tell_all_parents(Vector<Object> message, Vector<Object> objects_not_to_tell)
 		throws RemoteException {
 		for (Enumeration e = environment().elements(); e != null && e.hasMoreElements();) {
 			MUDRemote o = nextParent(e);
@@ -318,7 +328,8 @@ public class MUDObject implements MUDRemote, Runnable {
 		return 1;
 	}
 
-	public int tell_parents(Vector message, Vector objects_not_to_tell)
+    @Override
+	public int tell_parents(Vector<Object> message, Vector<Object> objects_not_to_tell)
 		throws RemoteException {
 		for (Enumeration e = environment().elements(); e != null && e.hasMoreElements();) {
 			MUDRemote o = nextParent(e);
@@ -332,7 +343,8 @@ public class MUDObject implements MUDRemote, Runnable {
 		return 1;
 	}
 
-	public int tell_everything(Vector message, Vector objects_not_to_tell)
+    @Override
+	public int tell_everything(Vector<Object> message, Vector<Object> objects_not_to_tell)
 		throws RemoteException {
 		for (Enumeration e = environment().elements(); e != null && e.hasMoreElements();) {
 			MUDRemote o = nextParent(e);
@@ -359,7 +371,8 @@ public class MUDObject implements MUDRemote, Runnable {
 		return 1;
 	}
 
-	public int tell(Vector message) {
+    @Override
+	public int tell(Vector<Object> message) {
 		// receive messages from other objects
 		if (System.out != null) {
 			for (Enumeration e = message.elements(); e != null && e.hasMoreElements();) {
@@ -371,13 +384,13 @@ public class MUDObject implements MUDRemote, Runnable {
 		}
 		return 1;
 	}
-
-	public int command(MUDRemote subject, Vector comm)
+    @Override
+	public int command(MUDRemote subject, Vector<Object> comm)
 		throws RemoteException {
 		// object should parse command and take active, if possible
 		String verb = null;
-		comm = (Vector)comm.clone();
-		if (comm.size() > 0) {
+		comm = (Vector<Object>)comm.clone();
+		if (!comm.isEmpty()) {
 			verb = (String)comm.elementAt(0);
 		} else {
 			return 0;
@@ -400,7 +413,7 @@ public class MUDObject implements MUDRemote, Runnable {
 				if (comm.size() > 1) {
 					String cmd = comm.elementAt(1).toString();
 					if (cmd.equalsIgnoreCase(newverb)) {
-						Vector err = new Vector();
+						Vector<Object> err = new Vector<>();
 						err.addElement("Can't create circular references");
 						subject.tell(err);
 						return 0;
@@ -416,7 +429,7 @@ public class MUDObject implements MUDRemote, Runnable {
 						} catch (IOException ioe) {
 							System.err.println("Problems writing aliases file");
 						}
-						Vector newalias = new Vector();
+						Vector<Object> newalias = new Vector<>();
 						newalias.addElement("Created");
 						newalias.addElement(newverb);
 						return subject.tell(newalias);
@@ -431,29 +444,29 @@ public class MUDObject implements MUDRemote, Runnable {
 			}
 		} else if (verb.equalsIgnoreCase("/say")) {
 			try {
-				Vector not_me = new Vector();
+				Vector<Object> not_me = new Vector<>();
 				comm.removeElementAt(0);
 				comm.insertElementAt("&lt;"+subject.getName()+"&gt;", 0);
 				return tell_siblings(comm, not_me);
 			} catch (NullPointerException npe) {
-				Vector thin_air = new Vector();
+				Vector<Object> thin_air = new Vector<>();
 				thin_air.insertElementAt(
 					"You speak into thin air.", 0);
 				return subject.tell(thin_air);
 			}
 		} else if (verb.equalsIgnoreCase("/look")) {
-			Vector message = new Vector();
-			Vector look;
+			Vector<Object> message = new Vector<>();
+			Vector<Object> look;
 			int i;
 			Enumeration e = environment().elements();
 			while (e != null && e.hasMoreElements()) {
 				message.addElement("<font color=green><br>You're in");
 				MUDRemote room = nextParent(e);
-				look = new Vector();
+				look = new Vector<>();
 				look.addElement(subject.getName());
 				look.addElement("looks at");
 				look.addElement(room.getName());
-				Vector sibs = new Vector();
+				Vector<Object> sibs = new Vector<>();
 				sibs.addElement(subject);
 				tell_siblings(look, sibs);
 				message.addElement(room.getName());
@@ -479,7 +492,7 @@ public class MUDObject implements MUDRemote, Runnable {
 					MUDRemote o = nextItem(f);
 					if (o.getName().equalsIgnoreCase(comm.elementAt(1).toString())) {
 						o.add(this);
-						Vector v = new Vector();
+						Vector<Object> v = new Vector<>();
 						v.addElement(this.getName());
 						v.addElement("picked you up");
 						o.tell(v);
@@ -497,7 +510,7 @@ public class MUDObject implements MUDRemote, Runnable {
 					for (Enumeration f = room.inventory().elements(); f != null && f.hasMoreElements() && breakout == 0;) {
 						MUDRemote o = nextItem(f);
 						if (o.getName().equalsIgnoreCase(comm.elementAt(1).toString())) {
-							Vector v = new Vector(2);
+							Vector<Object> v = new Vector<>(2);
 							v.addElement(o.getName());
 							v.addElement(o.getURL());
 							tell(v);
@@ -511,7 +524,7 @@ public class MUDObject implements MUDRemote, Runnable {
 				return 0;
 			}
 		} else if (verb.equalsIgnoreCase("/inventory")) {
-			Vector v = new Vector();
+			Vector<Object> v = new Vector<>();
 			v.addElement("You have");
 			for (Enumeration e = inventory().elements(); e != null && e.hasMoreElements();){
 				MUDRemote o = nextItem(e);
@@ -526,7 +539,7 @@ public class MUDObject implements MUDRemote, Runnable {
 
 				if (o.getName().equalsIgnoreCase(comm.elementAt(1).toString())) {
 					o.remove(this);
-					Vector v = new Vector();
+					Vector<Object> v = new Vector<>();
 					v.addElement(this.getName());
 					v.addElement("dropped you");
 					o.tell(v);
@@ -545,7 +558,7 @@ public class MUDObject implements MUDRemote, Runnable {
 				for (Enumeration f = room.inventory().elements(); f != null && f.hasMoreElements() && breakout == 0;) {
 					MUDRemote o = nextItem(f);
 					if (o.getName().equalsIgnoreCase(comm.elementAt(1).toString())) {
-						Vector v = new Vector();
+						Vector<Object> v = new Vector<>();
 						v.addElement("/goto" );
 						v.addElement(o);
 						subject.tell(v);
@@ -562,9 +575,9 @@ public class MUDObject implements MUDRemote, Runnable {
 			}
 		} else if (verb.equalsIgnoreCase("/nick")) {
 			if (comm.size() > 1) {
-				Vector v = new Vector(1);
+				Vector<Object> v = new Vector<>(1);
 				v.addElement("<font color=red>***"+subject.getName()+" is now know as "+comm.elementAt(1)+"</font>");
-				Vector not_me = new Vector(5);
+				Vector<Object> not_me = new Vector<>(5);
 				tell_siblings(v, not_me);
 				subject.setName((String)comm.elementAt(1));
 				subject.readAliases();
@@ -575,13 +588,14 @@ public class MUDObject implements MUDRemote, Runnable {
 			}
 
 		} else {
-			comm = (Vector)aliases.get(verb);
-			if (comm != null && comm.size() > 0) {
+			comm = (Vector<Object>)aliases.get(verb);
+			if (comm != null && !comm.isEmpty()) {
 				return command(subject, comm);
 			}
 			return 0;
 		}
 	}
+	@Override
 	public void readAliases() {
 /*
 		try {
@@ -596,17 +610,20 @@ public class MUDObject implements MUDRemote, Runnable {
 		}
 */
 	}
+	@Override
 	public int addobject(MUDRemote new_object)
 		throws RemoteException {
 		return new_object.add(this);
 	}
-	public int addToInventory(Vector v) throws RemoteException {
+	@Override
+	public int addToInventory(Vector<Object> v) throws RemoteException {
 		Enumeration e = v.elements();
 		while (e.hasMoreElements()) {
 			((MUDRemote)e.nextElement()).add(this);
 		}
 		return 1;
 	}
+	@Override
 	public int addToInventory(InventoryItem i)
 		throws RemoteException {
 			// System.err.println("Checkin for child 2 "+i.getURL());
@@ -616,6 +633,7 @@ public class MUDObject implements MUDRemote, Runnable {
 			}
 			return 1;
 	}
+	@Override
 	public int add(MUDRemote new_location)
 		throws RemoteException {
 		// players tell room that something arrived
@@ -641,19 +659,21 @@ public class MUDObject implements MUDRemote, Runnable {
 		}
 		return ev;
 	}
+	@Override
 	public boolean contains(MUDRemote o) throws RemoteException {
 		for (int i = 0; i < children.size(); i++) {
 			InventoryItem ii = (InventoryItem)children.elementAt(i);
 			if (ii == o) {
 				return true;
 			}
-			MUDRemote mr = ii.object();
-			if (mr == o) {
+			MUDRemote mre = ii.object();
+			if (mre == o) {
 				return true;
 			}
 		}
 		return false;
 	}
+	@Override
 	public int remove(MUDRemote from)
 		throws RemoteException {
 		int i = 0;
@@ -669,6 +689,7 @@ public class MUDObject implements MUDRemote, Runnable {
 		return 0;
 	}
 
+	@Override
 	public int removeInventoryElement(MUDRemote mr)
 	    throws RemoteException {
 		inventory();
@@ -694,6 +715,7 @@ public class MUDObject implements MUDRemote, Runnable {
 		}
 		return 1;
 	}
+	@Override
 	public void run() {  // default routine for players.
 				// override for non I/O bound threads
 		InputLine line = new InputLine();
@@ -702,6 +724,7 @@ public class MUDObject implements MUDRemote, Runnable {
 		}
 		// System.exit(0);
 	}
+	@Override
 	public int processInput(InputLine line) {
 		   int ret = 0;
 	           try {
@@ -722,16 +745,16 @@ public class MUDObject implements MUDRemote, Runnable {
 			}
 			// then check neighbors
 			if (ret == 0) {
-				Vector siblings = get_siblings();
+				Vector<Object> siblings = get_siblings();
 				for (Enumeration e = siblings.elements(); e != null && e.hasMoreElements() && ret == 0;) {
 					MUDRemote o = (MUDRemote)e.nextElement();
 					ret = o.command(this, line);
 				}
 			}
-			if (line.size() > 0) {
+			if (!line.isEmpty()) {
 				if (ret == 0) {
 				 	if (((String)line.elementAt(0)).indexOf("/") == 0) {
-						Vector v = new Vector();
+						Vector<Object> v = new Vector<>();
 						v.addElement("<font color=blue>What?</font>");
 						tell(v);
 						ret = 1;
@@ -754,34 +777,30 @@ public class MUDObject implements MUDRemote, Runnable {
 			System.err.println("looking up 3 '"+url+"'");
 			mo = lookup(url);
 			mo.ping();
-		} catch (Exception e) {
+		} catch (RemoteException e) {
 			System.err.println("Exception "+e);
 			// e.printStackTrace();
 			return 0;
 		}
-		if (mo == null) {
-			System.err.println("Couldn't get remote object");
-			return 0;
-		} else {
-			try {
-				if (subject.environment().size() > 0) {
-					ParentItem pi = (ParentItem)subject.environment().elementAt(0);
-					MUDRemote mr = pi.object();
-					subject.remove(mr);
-				}
-				mo.addobject(subject);
-			} catch (RemoteException re) {
-				// System.err.println("Remote Exception error:"+re);
-				re.printStackTrace();
-				return 0;
+		try {
+			if (!subject.environment().isEmpty()) {
+				ParentItem pi = (ParentItem)subject.environment().elementAt(0);
+				MUDRemote mre = pi.object();
+				subject.remove(mre);
 			}
+			mo.addobject(subject);
+		} catch (RemoteException re) {
+			// System.err.println("Remote Exception error:"+re);
+			re.printStackTrace(System.err);
+			return 0;
 		}
 		// now take a look at where we are
-		Vector look = new Vector();
+		Vector<Object> look = new Vector<>();
 		look.addElement("/look");
 		subject.command(subject,look);
 		return 1;
 	}
+	@Override
 	public void setURL(String u) {
 		url = u;
 		int pp = url.indexOf("//")+2;
@@ -796,23 +815,25 @@ public class MUDObject implements MUDRemote, Runnable {
 			// UnicastRemoteObject.exportObject(this);
 			// Naming.rebind(url, this);
 			settings.load(getClass().getClassLoader().getResourceAsStream("dev/objects.properties"));
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace(System.err);
 		}
 	}
+	@Override
 	public String getURL() throws RemoteException {
 		return url;
 	}
+	@Override
 	public boolean equals(Object obj) {
 		try {
-			MUDRemote mr = (MUDRemote)obj;
-			if (url == null || mr.getURL() == null) {
+			MUDRemote mre = (MUDRemote)obj;
+			if (url == null || mre.getURL() == null) {
 				return false;
 			}
-			System.err.println("testing "+url+ " against "+mr.getURL());
-			return url.equalsIgnoreCase(mr.getURL());
+			System.err.println("testing "+url+ " against "+mre.getURL());
+			return url.equalsIgnoreCase(mre.getURL());
 		} catch (RemoteException re) {
-			re.printStackTrace();
+			re.printStackTrace(System.err);
 			return false;
 		}
 	}
@@ -824,7 +845,6 @@ public class MUDObject implements MUDRemote, Runnable {
 	Hashtable ht_tf = new Hashtable();
 	Hashtable ht_lab = new Hashtable();
 	Hashtable ht_box = new Hashtable();
-	boolean added = false;
 	JDialog diag = null;
 	public void setDialog(JDialog jd) {
 		diag = jd;
@@ -836,12 +856,14 @@ public class MUDObject implements MUDRemote, Runnable {
 		comp = c;
 		comp.putClientProperty("object", this);
 	}
+	@Override
 	public void copyFrom(MUDRemote o) throws RemoteException {
 		// name = o.name;
 		ss = ((MUDObject)o).ss;
 		ht = (Hashtable)((MUDObject)o).ht.clone();
 		rels = (Hashtable)((MUDObject)o).rels.clone();
 	}
+	@Override
 	public String id() throws RemoteException {
 		return name;
 	}
@@ -854,12 +876,15 @@ public class MUDObject implements MUDRemote, Runnable {
 	public Insets getBorderInsets(Component c) {
 		return new Insets(ss, ss, ss, ss);
 	}
+	@Override
 	public void putProp(String index) throws RemoteException {
 		ht.put(index, index);
 	}
+	@Override
 	public Enumeration getPropertyKeys() throws RemoteException {
 		return ht.keys();
 	}
+	@Override
 	public boolean isPropertySet(String index) throws RemoteException {
 		return ht.containsKey(index);
 	}
@@ -890,12 +915,15 @@ public class MUDObject implements MUDRemote, Runnable {
 	public void removeBox(String prop) {
 		ht_box.remove(prop);
 	}
+	@Override
 	public String get(String prop) throws RemoteException {
 		return (String)rels.get(prop);
 	}
+	@Override
 	public void putInt(String prop, int value) throws RemoteException {
 		rels.put(prop, String.valueOf(value));
 	}
+	@Override
 	public int getInt(String prop) throws RemoteException {
 		
 		String s = (String)rels.get(prop);
@@ -905,12 +933,15 @@ public class MUDObject implements MUDRemote, Runnable {
 		int i = Integer.parseInt(s);
 		return i;
 	}
+	@Override
 	public void put(String prop, String value) throws RemoteException {
 		rels.put(prop, value);
 	}
+	@Override
 	public void remove(String prop) {
 		rels.remove(prop);
 	}
+	@Override
 	public Enumeration keys() throws RemoteException {
 		return rels.keys();
 	}

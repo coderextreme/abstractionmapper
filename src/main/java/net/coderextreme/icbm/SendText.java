@@ -19,10 +19,10 @@ package net.coderextreme.icbm;
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JTextField;
 
 public class SendText implements ActionListener {
 	MUDObject mc = null;
@@ -33,6 +33,7 @@ public class SendText implements ActionListener {
 		this.mudc = mudc;
 		this.tf = tf;
 	}
+	@Override
 	public void actionPerformed(ActionEvent ae) {
 	    InputLine line = new InputLine();
 	    line = line.get_buffer(tf.getText());

@@ -18,12 +18,7 @@ package net.coderextreme.icbm;
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-import java.util.*;
-import java.awt.*;
-import java.net.*;
-import java.io.*;
-import java.lang.Thread;
-import java.rmi.*;
+import java.io.Serializable;
 
 public class InventoryItem implements Serializable {
 	private MUDRemote obj;
@@ -53,6 +48,7 @@ public class InventoryItem implements Serializable {
 	public String getURL() {
 		return url;
 	}
+	@Override
 	public boolean equals(Object o) {
 		// System.err.println("Comparing "+url+" "+((InventoryItem)o).url);
 		return obj.equals(((InventoryItem)o).obj);

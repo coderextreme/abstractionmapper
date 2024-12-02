@@ -18,14 +18,14 @@ package net.coderextreme.icbm;
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-import java.util.*;
-import java.awt.*;
-import java.net.*;
-import java.io.*;
-import java.lang.Thread;
-import java.rmi.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
-public class InputLine extends Vector {
+public class InputLine extends Vector<Object> {
 	public InputLine get_buffer(String str) {
 		if (str != null) {
 			StringTokenizer strtok = new StringTokenizer(str); 

@@ -18,30 +18,31 @@ package net.coderextreme.icbm;
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-import java.util.*;
-import java.rmi.*;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.Enumeration;
+import java.util.Vector;
 
 public interface MUDRemote extends Remote {
-	public Vector inventory() throws RemoteException;
-	public Vector environment() throws RemoteException;
-	public Vector get_siblings() throws RemoteException;
+	public Vector<Object> inventory() throws RemoteException;
+	public Vector<Object> environment() throws RemoteException;
+	public Vector<Object> get_siblings() throws RemoteException;
 	public void setName(String a) throws RemoteException;
 	public String getName() throws RemoteException;
 
-	public int tell(Vector message) throws RemoteException;
-	public int tell_all_children(Vector message, Vector objects_not_to_tell) throws RemoteException;
-	public int tell_children(Vector message, Vector objects_not_to_tell) throws RemoteException;
-	public int tell_coowners(Vector message, Vector objects_not_to_tell) throws RemoteException;
-	public int tell_siblings(Vector message, Vector objects_not_to_tell) throws RemoteException;
-	public int tell_all_parents(Vector message, Vector objects_not_to_tell) throws RemoteException;
-	public int tell_parents(Vector message, Vector objects_not_to_tell) throws RemoteException;
-	public int tell_everything(Vector message, Vector objects_not_to_tell) throws RemoteException;
-
-	public int command(MUDRemote subject, Vector comm) throws RemoteException;
+	public int tell(Vector<Object> message) throws RemoteException;
+	public int tell_all_children(Vector<Object> message, Vector<Object> objects_not_to_tell) throws RemoteException;
+	public int tell_children(Vector<Object> message, Vector<Object> objects_not_to_tell) throws RemoteException;
+	public int tell_coowners(Vector<Object> message, Vector<Object> objects_not_to_tell) throws RemoteException;
+	public int tell_siblings(Vector<Object> message, Vector<Object> objects_not_to_tell) throws RemoteException;
+	public int tell_all_parents(Vector<Object> message, Vector<Object> objects_not_to_tell) throws RemoteException;
+	public int tell_parents(Vector<Object> message, Vector<Object> objects_not_to_tell) throws RemoteException;
+	public int tell_everything(Vector<Object> message, Vector<Object> objects_not_to_tell) throws RemoteException;
+	public int command(MUDRemote subject, Vector<Object> comm) throws RemoteException;
 	public int add(MUDRemote new_location) throws RemoteException;
 	public int addobject(MUDRemote new_child) throws RemoteException;
 	public int addToInventory(InventoryItem i) throws RemoteException;
-	public int addToInventory(Vector v) throws RemoteException;
+	public int addToInventory(Vector<Object> v) throws RemoteException;
 	public int remove(MUDRemote from) throws RemoteException;
 	public int removeInventoryElement(MUDRemote mr) throws RemoteException;
 	public boolean ping() throws RemoteException;

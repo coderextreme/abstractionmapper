@@ -1,6 +1,6 @@
 module net.coderextreme {
     requires javafx.controls;
-    requires java.desktop;
+    requires transitive java.desktop;
     requires java.rmi;
     requires com.formdev.flatlaf;
     requires org.seleniumhq.selenium.api;

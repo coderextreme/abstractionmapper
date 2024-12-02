@@ -18,8 +18,10 @@ package net.coderextreme.dev;
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-import java.net.*;
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 public class LocalMUDClient extends URLClassLoader {
 	static public void main(String args[]) {
@@ -43,18 +45,21 @@ public class LocalMUDClient extends URLClassLoader {
 
 			URL urls[] = new URL[1];
 			urls[0] = new URL(url);
-			LocalMUDClient j = new LocalMUDClient(urls);
-			Class c = j.findClass("icbm.MUDClient");
-			System.err.println(c.getName());
-			Class params[] = new Class[1];
-			params[0] = args2.getClass();
-			Constructor cons = c.getConstructor(params);
-
-			Object objs[] = new Object[1];
-			objs[0] = args2;
-			cons.newInstance(objs);
-		} catch (Exception e) {
-			e.printStackTrace();
+				try (LocalMUDClient j = new LocalMUDClient(urls)) {
+					Class c = j.findClass("net.coderextreme.icbm.MUDClient");
+					System.err.println(c.getName());
+					Class params[] = new Class[1];
+					params[0] = args2.getClass();
+					Constructor cons = c.getConstructor(params);
+					
+					Object objs[] = new Object[1];
+					objs[0] = args2;
+					cons.newInstance(objs);
+				} catch (Exception excep) {
+					excep.printStackTrace(System.err);
+				}
+		} catch (MalformedURLException e) {
+			e.printStackTrace(System.err);
 		}
 	}
 	public LocalMUDClient(URL urls[]) {

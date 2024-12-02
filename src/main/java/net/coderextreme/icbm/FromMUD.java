@@ -19,11 +19,12 @@ package net.coderextreme.icbm;
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-import java.util.*;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.text.*;
-import java.rmi.*;
+import java.rmi.RemoteException;
+import java.util.Enumeration;
+import java.util.Vector;
+
+import javax.swing.JEditorPane;
+import javax.swing.text.DefaultCaret;
 
 public class FromMUD extends MUDObject {
 	JEditorPane ta = null;
@@ -36,19 +37,20 @@ public class FromMUD extends MUDObject {
 		this.mudc = mudc;
 	}
 
-	public int tell(Vector message) {
-           try {
+	@Override
+	public int tell(Vector<Object> message) {
+        try {
 		   // force client to move between locations
-		   if (message.size() > 0 && message.elementAt(0).toString().equals("/goto")) {
-			MUDRemote mo = (MUDRemote)message.elementAt(1);
-			mudc.switchTo(mo);
-			message = new Vector();
-			message.addElement("You have been transported to "+mo.getName());
+		   if (!message.isEmpty() && message.elementAt(0).toString().equals("/goto")) {
+				MUDRemote mo = (MUDRemote)message.elementAt(1);
+				mudc.switchTo(mo);
+				message = new Vector<>();
+				message.addElement("You have been transported to "+mo.getName());
 		   }
-	   } catch (Exception e) {
-		e.printStackTrace();
+	   } catch (RemoteException e) {
+		e.printStackTrace(System.err);
 	   }
-	   StringBuffer sb = new StringBuffer();
+	   StringBuilder sb = new StringBuilder();
 	   try {
 		for (Enumeration e = message.elements(); e != null && e.hasMoreElements();) {
 			String s = e.nextElement().toString();
@@ -67,7 +69,7 @@ public class FromMUD extends MUDObject {
 		//	ble.printStackTrace();
 		}
 	    } catch (NullPointerException npe) {
-		npe.printStackTrace();
+			npe.printStackTrace(System.err);
 	    }
 	    return 1;
 	}
