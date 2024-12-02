@@ -18,16 +18,25 @@ package net.coderextreme.icbm;
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-import java.util.*;
-import java.awt.*;
-import java.net.*;
-import java.io.*;
-import java.lang.Thread;
-import java.rmi.*;
-import javax.swing.*;
-import java.rmi.server.*;
+import java.awt.Component;
+import java.awt.Insets;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.rmi.RemoteException;
+import java.rmi.UnmarshalException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Properties;
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 // class for all objects in the mud which aren't actual players
 public class MUDObject implements MUDRemote, Runnable {
@@ -110,7 +119,11 @@ public class MUDObject implements MUDRemote, Runnable {
 				InputStream is = MUDObject.class.getClassLoader().getResourceAsStream("net/coderextreme/dev/objects.properties");
 				if (is == null) {
 					System.err.println("input stream for properties is null");
-					System.exit(0);
+					is = new FileInputStream("src/main/resources/net/coderextreme/dev/objects.properties");
+					if (is == null)  {
+						System.err.println("input stream for properties is null");
+						System.exit(0);
+					}
 				}
 				settings.load(is);
 			} catch (Exception e) {

@@ -3,9 +3,8 @@ package net.coderextreme.main;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import net.coderextreme.icbm.*;
-import net.coderextreme.motion.*;
-
+import net.coderextreme.icbm.MUDServer;
+import net.coderextreme.motion.Motion;
 
 public class App {
 	public static void main(String args[]) {
@@ -16,7 +15,7 @@ public class App {
 			if (args.length > 1) {
 				Motion.main(args);
 			} else {
-				Motion.main(new String[] {"target/classes/net/coderextreme/motion/contact.data", "target/classes/net/coderextreme/motion/gedda/"});
+				Motion.main(new String[] {"src/main/resources/net/coderextreme/motion/contact.data", "src/main/resources/net/coderextreme/motion/gedda/"});
 			}
 		} catch (Exception e) {
 		    e.printStackTrace();

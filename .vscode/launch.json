@@ -1,0 +1,84 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "net.coderextreme/net.coderextreme.assets.Main",
+            "projectName": "abstractionmapper"
+        },
+        {
+            "type": "java",
+            "name": "LocalMUDClient",
+            "request": "launch",
+            "mainClass": "net.coderextreme/net.coderextreme.dev.LocalMUDClient",
+            "projectName": "abstractionmapper"
+        },
+        {
+            "type": "java",
+            "name": "LocalMUDServer",
+            "request": "launch",
+            "mainClass": "net.coderextreme/net.coderextreme.dev.LocalMUDServer",
+            "projectName": "abstractionmapper"
+        },
+        {
+            "type": "java",
+            "name": "MUDClient",
+            "request": "launch",
+            "mainClass": "net.coderextreme/net.coderextreme.icbm.MUDClient",
+            "projectName": "abstractionmapper"
+        },
+        {
+            "type": "java",
+            "name": "MUDServer",
+            "request": "launch",
+            "mainClass": "net.coderextreme/net.coderextreme.icbm.MUDServer",
+            "projectName": "abstractionmapper"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "net.coderextreme/net.coderextreme.main.App",
+            "projectName": "abstractionmapper"
+        },
+        {
+            "type": "java",
+            "name": "HashtableRemote",
+            "request": "launch",
+            "mainClass": "net.coderextreme/net.coderextreme.motion.HashtableRemote",
+            "projectName": "abstractionmapper"
+        },
+        {
+            "type": "java",
+            "name": "Motion",
+            "request": "launch",
+            "mainClass": "net.coderextreme/net.coderextreme.motion.Motion",
+            "projectName": "abstractionmapper"
+        },
+        {
+            "type": "java",
+            "name": "oimove",
+            "request": "launch",
+            "mainClass": "net.coderextreme/net.coderextreme.motion.gedda.oimove",
+            "projectName": "abstractionmapper"
+        },
+        {
+            "type": "java",
+            "name": "App(1)",
+            "request": "launch",
+            "mainClass": "net.coderextreme/org.openjfx.App",
+            "projectName": "abstractionmapper"
+        }
+    ]
+}
