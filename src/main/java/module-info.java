@@ -11,7 +11,7 @@ module net.coderextreme {
     requires org.seleniumhq.selenium.safari_driver;
     requires org.seleniumhq.selenium.ie_driver;
     requires org.seleniumhq.selenium.remote_driver;
-    requires jaylib;
+    requires io.github.electronstudio.jaylib.ffm;
     opens net.coderextreme.motion to java.rmi;
     exports net.coderextreme.dev;
     exports net.coderextreme.icbm;
