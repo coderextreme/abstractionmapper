@@ -78,7 +78,7 @@ public class oimove extends JFrame
 	object_node current_property_object;
 	object_node top;
 	static public oimove SELECTED_OIMOVE;
-	static public Set<oimove> OIMOVES = Collections.synchronizedSet(new HashSet<oimove>(3));
+	static public Set<oimove> OIMOVES = Collections.synchronizedSet(new HashSet<>(3));
 
 
 	/*
@@ -118,9 +118,7 @@ public class oimove extends JFrame
 	}
 	
 	public static boolean selected(object_node on) {
-		Iterator<oimove> oimoves = OIMOVES.iterator();
-		while (oimoves.hasNext()) {
-			oimove oim = oimoves.next();
+		for (oimove oim : OIMOVES) {
 			if (oim.object_selection.contains(on)) {
 				return true;
 			}
@@ -161,21 +159,15 @@ public class oimove extends JFrame
 		top = on;
 		top.addMouseListener(this);
 		top.addMouseMotionListener(this);
-		top.registerKeyboardAction(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				oimove.this.props();
-			}
-		}, "Props", KeyStroke.getKeyStroke('p'), JComponent.WHEN_IN_FOCUSED_WINDOW);
-		top.registerKeyboardAction(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				oimove.this.view();
-			}
-		}, "View", KeyStroke.getKeyStroke('o'), JComponent.WHEN_IN_FOCUSED_WINDOW);
-		top.registerKeyboardAction(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				oimove.this.createCopy(last_x, last_y);
-			}
-		}, "Instantiate", KeyStroke.getKeyStroke('i'), JComponent.WHEN_IN_FOCUSED_WINDOW);
+		top.registerKeyboardAction((@SuppressWarnings("unused") ActionEvent ae) -> {
+                    oimove.this.props();
+                }, "Props", KeyStroke.getKeyStroke('p'), JComponent.WHEN_IN_FOCUSED_WINDOW);
+		top.registerKeyboardAction((@SuppressWarnings("unused") ActionEvent ae) -> {
+                    oimove.this.view();
+                }, "View", KeyStroke.getKeyStroke('o'), JComponent.WHEN_IN_FOCUSED_WINDOW);
+		top.registerKeyboardAction((@SuppressWarnings("unused") ActionEvent ae) -> {
+                    oimove.this.createCopy(last_x, last_y);
+                }, "Instantiate", KeyStroke.getKeyStroke('i'), JComponent.WHEN_IN_FOCUSED_WINDOW);
 	}
 	protected void createCopy(long x, long y) {
 		Iterator<oimove> oimoves = OIMOVES.iterator();
@@ -183,9 +175,7 @@ public class oimove extends JFrame
 		long miny = Long.MAX_VALUE;
 		while (oimoves.hasNext()) {
 			oimove oim = oimoves.next();
-			Iterator<object_node> nodes = oim.object_selection.iterator();
-			while (nodes.hasNext()) {
-				object_node on = nodes.next();
+			for (object_node on : oim.object_selection) {
 				Point p = on.get_xy();
 				if (p.x < minx) {
 					minx = p.x;
@@ -443,18 +433,10 @@ public class oimove extends JFrame
 
 		Dimension d = objp.getSize();
 		switch (pcp[0][0]) {
-		case 'w':
-			objp.setSize(d.width+1, d.height);
-			break;
-		case 'n':
-			objp.setSize(d.width-1, d.height);
-			break;
-		case 't':
-			objp.setSize(d.width, d.height+1);
-			break;
-		case 's':
-			objp.setSize(d.width, d.height-1);
-			break;
+		case 'w' -> objp.setSize(d.width+1, d.height);
+		case 'n' -> objp.setSize(d.width-1, d.height);
+		case 't' -> objp.setSize(d.width, d.height+1);
+		case 's' -> objp.setSize(d.width, d.height-1);
 		}
 	}
 	object_node pos;
@@ -476,18 +458,14 @@ public class oimove extends JFrame
 				pos.put(PROP_SUBJECT, nh.id());
 			object_list.OBJECT_LIST.insert_relationship(h, pos, REL_PARENTAL);
 		}
-		new swing_safe(new Runnable() {
-			public void run() {
-		
-				object_node baby;
-		
-				baby = create_icon_from_props(pos, true, oimove.SELECTED_OIMOVE.top);
-				baby.invalidate();
-				baby.validate();
-				baby.repaint();
-				baby.parent().repaint();
-			}
-			});
+		new swing_safe(() -> {
+			object_node baby;
+			baby = create_icon_from_props(pos, true, oimove.SELECTED_OIMOVE.top);
+			baby.invalidate();
+			baby.validate();
+			baby.repaint();
+			baby.parent().repaint();
+		});
 
 	}
 
@@ -651,10 +629,6 @@ public class oimove extends JFrame
 		objp.parent().validate();
 	}
 
-	class TextModel {
-		String text;
-	}
-
 	void
 	add_props(object_node on, Box box)
 	{
@@ -686,12 +660,14 @@ public class oimove extends JFrame
 			else
 				s = "Properties";
 
-			JFrame owner;
-			if (o.getFrame() == null) {
+			JFrame owner = null;
+			if (o != null) {
+				if (o.getFrame() == null) {
 
-				owner = new JFrame(o.id());
-			} else {
-				owner = o.getFrame();
+					owner = new JFrame(o.id());
+				} else {
+					owner = o.getFrame();
+				}
 			}
 			Box current_box = Box.createVerticalBox();
 			class PropsDialog extends JDialog implements ActionListener {
@@ -702,27 +678,28 @@ public class oimove extends JFrame
 					objp = o;
 					b = box;
 				}
-				
+				@Override
 				public void actionPerformed(ActionEvent ae) {
-					if (ae.getActionCommand().equals("Reset")) {
-						b.removeAll();
-						add_props(objp, b);
-						object_node son;
-						son = subject_node(objp);
-						if (son != null)
-							add_props(son, b);
-						this.add("Center", b);
-						b.invalidate();
-						b.validate();
-						b.repaint();
-					} else if (ae.getActionCommand().equals("Apply")) {
-						apply(objp);
-					} else if (ae.getActionCommand().equals("Dismiss")) {
-						this.dispose();
-					}
+					switch (ae.getActionCommand()) {
+						case "Reset" -> {
+									b.removeAll();
+									add_props(objp, b);
+									object_node son;
+									son = subject_node(objp);
+									if (son != null)
+										add_props(son, b);
+									this.add("Center", b);
+									b.invalidate();
+									b.validate();
+									b.repaint();
+						}
+						case "Apply" -> apply(objp);
+						case "Dismiss" -> this.dispose();
+						default -> { }
+                    }
 				}
 			
-			};
+			}
 			PropsDialog diag = new PropsDialog(owner, s, o, current_box);
 			diag.getContentPane().setLayout(new BorderLayout());
 			Panel p = new Panel();
@@ -756,9 +733,8 @@ public class oimove extends JFrame
 	{
 		if (on != null) {
 			String s;
-			s = new String(""+last_x);
+			s = ""+last_x;
 			on.put(PROP_X, s);
-			s = new String(""+last_y);
 			on.put(PROP_Y, s);
 		}
 	}
@@ -849,16 +825,9 @@ public class oimove extends JFrame
 		b = (x1 - x2);
 		a = (y2 - y1);
 		d = (float)(Math.abs((int)(a * (x - x1) + b * ( y - y1))) / Math.sqrt(a * a + b * b));
-		if (d < 5 &&
+		return (d < 5 &&
 			( (x1 <= x && x <= x2) || (x2 <= x && x <= x1)) &&
-			( (y1 <= y && y <= y2) || (y2 <= y && y <= y1)))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+			( (y1 <= y && y <= y2) || (y2 <= y && y <= y1)));
 	}
 /*
 
@@ -1058,6 +1027,7 @@ public class oimove extends JFrame
 		// move current pointer
 		// reexecute command
 	}
+	@Override
     public void mousePressed(MouseEvent me) {
 		object_node on = object_list.OBJECT_LIST.find(top.id());
 		List<object_node> ol = object_list.OBJECT_LIST.find_relatees(on, oimove.REL_PARENTAL);
@@ -1101,6 +1071,7 @@ public class oimove extends JFrame
 		SELECTED_OIMOVE = this;
 	}
 
+		@Override
         public void mouseReleased(MouseEvent me) {
 		object_node local_root;
 		if (dragged == null) {
@@ -1123,6 +1094,7 @@ public class oimove extends JFrame
 		}
 		dragged = null;
         }
+		@Override
         public void mouseClicked(MouseEvent me) {
 /*
 		select_line(me);
@@ -1131,15 +1103,19 @@ public class oimove extends JFrame
 			// maybe do something here
 		}
         }
+		@Override
         public void mouseEntered(MouseEvent me) {
         }
+		@Override
         public void mouseExited(MouseEvent me) {
         }
+		@Override
         public void mouseMoved(MouseEvent me) {
 		last_x = me.getX();
 		last_y = me.getY();
         }
 
+		@Override
 	public void mouseDragged(MouseEvent me) {
 		if (me.getSource() instanceof object_node) {
 			motion_line((object_node) me.getSource(), me);
@@ -1147,11 +1123,13 @@ public class oimove extends JFrame
 			drag(me);
 		}
 	}
+	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getActionCommand().equals("Save")) {
 			object_list.OBJECT_LIST.save_db();
 		}
 	}
+	@Override
 	public void paint(Graphics graphics) {
 		super.paint(graphics);
 		if (drag_band == null)
@@ -1169,14 +1147,11 @@ public class oimove extends JFrame
 	*/
 	
 			object_node on = objp;
-			if (on != null) {
-				String s = (String)on.get(PROP_LINE);
-				object_node con = object_list.OBJECT_LIST.find(s);
-				if (con != null) {
-					Point pxy = con.get_xy();
-					graphics.drawLine( last_x, last_y, pxy.x, pxy.y);
-				}
-	
+			String s = (String)on.get(PROP_LINE);
+			object_node con = object_list.OBJECT_LIST.find(s);
+			if (con != null) {
+				Point pxy = con.get_xy();
+				graphics.drawLine( last_x, last_y, pxy.x, pxy.y);
 			}
 		}
 

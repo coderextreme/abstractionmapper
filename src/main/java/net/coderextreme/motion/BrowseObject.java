@@ -1,12 +1,21 @@
 package net.coderextreme.motion;
 
-import java.awt.event.*;
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import java.rmi.*;
-import net.coderextreme.icbm.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Point;
+import java.rmi.RemoteException;
+import java.util.Enumeration;
+import java.util.Hashtable;
+
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.border.AbstractBorder;
 
 public class BrowseObject extends AbstractBorder {
 	private String name = "Name";
@@ -17,7 +26,6 @@ public class BrowseObject extends AbstractBorder {
 	Hashtable ht = new Hashtable();
 	Hashtable rels = new Hashtable();
 	Hashtable ht_tf = new Hashtable();
-	boolean added = false;
 	JDialog diag = null;
 	public BrowseObject(String name) throws RemoteException {
 		this.name = name;
@@ -66,9 +74,11 @@ public class BrowseObject extends AbstractBorder {
 	public JComponent getComponent() {
 		return comp;
 	}
+	@Override
 	public boolean isBorderOpaque() {
 		return false;
 	}
+	@Override
 	public Insets getBorderInsets(Component c) {
 		return new Insets(ss, ss, ss, ss);
 	}
@@ -113,7 +123,7 @@ public class BrowseObject extends AbstractBorder {
 	public Enumeration keys() {
 		return rels.keys();
 	}
-
+	@Override
 	public synchronized void paintBorder(Component comp, Graphics g, int x, int y, int width, int height) {
 		Point p = new Point(x, y);
 		Dimension d = new Dimension(width, height);

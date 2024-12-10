@@ -1,147 +1,7 @@
-59	relationship	parental
-59	visible	false
-59	icon_width	64
-59	SessionName	yottzumm
-59	SessionPassword	Unique Super Secret Password
-59	child	female_parent
-59	CollaborationServer	 http://localhost:8088/tapi/template
-59	label	Katy Schildmeyer
-59	parent	contactapp_parent
-59	y	246
-59	x	536
-59	property_file	motion/gedda/session2.sdp
-59	icon_height	91
-59	v	0
-59	t	3456677 5678899
-59	fg	0 0 255
-59	s	yottzumm
-59	height	371
-59	o	yottzumm 123456789 123459999 IN IP4 lc-soc-lc.at
-59	width	407
-59	m	application 8443 TCP/WSS/C3P *
-59	icon	female.gif
-59	WebSocket	null
-59	EmailAddress	ksdesign@gmail.com
-59	c	IN IP4 lc-soc-lc.at
-59	a	c3p-object:obj2
-58	relationship	parental
-58	visible	false
-58	icon_width	151
-58	SessionName	yottzumm2
-58	SessionPassword	Unique Super Secret Password2
-58	child	male_parent
-58	CollaborationServer	http://localhost:8088/tapi/template
-58	label	Christoph Valentin
-58	parent	contactapp_parent
-58	y	52
-58	x	101
-58	property_file	motion/gedda/session1.sdp
-58	window_y	52
-58	icon_height	168
-58	v	0
-58	window_x	101
-58	fg	0 0 255
-58	t	3456677 5678899
-58	s	yottzumm2
-58	height	485
-58	o	yottzumm2 123456789 123459999 IN IP4 lc-soc-lc.at
-58	width	723
-58	m	application 8443 TCP/WSS/C3P *
-58	icon_dirty	1
-58	icon	male.gif
-58	WebSocket	null
-58	EmailAddress	yottzumm@gmail.com
-58	c	IN IP4 lc-soc-lc.at
-58	a	c3p-object:obj2
-classes_parent	x	32
-classes_parent	height	262
-classes_parent	window_y	521
-classes_parent	window_x	32
-classes_parent	width	347
-classes_parent	visible	true
-classes_parent	y	521
-partof_parent	height	200
-partof_parent	width	400
-partof_parent	visible	false
-male_relationship	fg	0 0 255
-male_relationship	child	male_parent
-male_relationship	relationship	parental
-male_relationship	y	36
-male_relationship	icon	male.gif
-male_relationship	label	Male
-male_relationship	x	28
-male_relationship	parent	classes_parent
-male_relationship	icon_width	64
-male_relationship	icon_height	89
-classes_relationship	fg	0 0 255
-classes_relationship	width	953
-classes_relationship	child	classes_parent
-classes_relationship	visible	false
-classes_relationship	relationship	parental
-classes_relationship	y	14
-classes_relationship	icon	classes.gif
-classes_relationship	label	Classes
-classes_relationship	x	71
-classes_relationship	parent	base
-classes_relationship	icon_width	48
-classes_relationship	icon_height	48
-classes_relationship	height	619
-relationships_parent	height	200
-relationships_parent	x	21
-relationships_parent	window_y	254
-relationships_parent	window_x	21
-relationships_parent	width	400
-relationships_parent	visible	true
-relationships_parent	y	254
-112	fg	0 0 255
-112	child	connect_parent
-112	relationship	parental
-112	y	14
-112	icon	connect.gif
-112	label	is connected to
-112	x	312
-112	parent	relationships_relationship
-112	icon_width	64
-112	icon_height	64
-111	fg	0 0 255
-111	child	flowsover_parent
-111	relationship	parental
-111	y	11
-111	icon	flowsover.gif
-111	label	Flows Over
-111	x	230
-111	parent	relationships_relationship
-111	icon_width	64
-111	icon_height	64
-110	fg	0 0 255
-110	child	flow_parent
-110	relationship	parental
-110	y	12
-110	icon	flow2.gif
-110	label	Flow
-110	x	166
-110	parent	relationships_relationship
-110	icon_width	48
-110	icon_height	48
-female_relationship	fg	0 0 255
-female_relationship	child	female_parent
-female_relationship	relationship	parental
-female_relationship	y	34
-female_relationship	icon	female.gif
-female_relationship	label	Female
-female_relationship	x	133
-female_relationship	parent	classes_parent
-female_relationship	icon_width	64
-female_relationship	icon_height	91
-base	fg	0 0 255
-base	width	299
-base	visible	true
-base	window_y	12
-base	window_x	716
-base	y	12
-base	label	Main Menu
-base	x	716
-base	height	225
+connect_parent	height	200
+connect_parent	width	400
+flow_parent	height	200
+flow_parent	width	400
 109	fg	0 0 255
 109	child	communicate_parent
 109	relationship	parental
@@ -162,79 +22,31 @@ base	height	225
 108	parent	relationships_relationship
 108	icon_width	64
 108	icon_height	64
-connect_relationship	fg	0 0 255
-connect_relationship	child	connect_parent
-connect_relationship	relationship	parental
-connect_relationship	y	11
-connect_relationship	icon	connect.gif
-connect_relationship	label	is connected to
-connect_relationship	x	319
-connect_relationship	parent	relationships_parent
-connect_relationship	icon_width	64
-connect_relationship	icon_height	64
-107	relationship	parental
-107	visible	false
-107	icon_width	64
-107	child	group_parent
-107	CollaborationServer	 http://localhost:8088/tapi/template
-107	label	Yottzumm Gathering
-107	parent	75
-107	y	113
-107	x	92
-107	property_file	motion/gedda/session2.sdp
-107	window_y	113
-107	icon_height	79
-107	v	0
-107	window_x	92
-107	t	3456677 5678899
-107	fg	0 0 255
-107	s	yottzumm
-107	height	385
-107	o	yottzumm 123456789 123459999 IN IP4 lc-soc-lc.at
-107	width	688
-107	m	application 8443 TCP/WSS/C3P *
-107	icon	group.gif
-107	c	IN IP4 lc-soc-lc.at
-107	a	c3p-object:obj2
-106	relationship	parental
-106	visible	false
-106	icon_width	64
-106	child	group_parent
-106	CollaborationServer	 http://localhost:8088/tapi/template
-106	label	Yottzumm Gathering 2
-106	parent	75
-106	y	108
-106	x	292
-106	property_file	motion/gedda/session2.sdp
-106	window_y	108
-106	icon_height	79
-106	v	0
-106	window_x	292
-106	t	3456677 5678899
-106	fg	0 0 255
-106	s	yottzumm2
-106	height	28
-106	o	yottzumm2 123456789 123459999 IN IP4 lc-soc-lc.at
-106	width	48
-106	m	application 8443 TCP/WSS/C3P *
-106	icon	group.gif
-106	c	IN IP4 lc-soc-lc.at
-106	a	c3p-object:obj2
-104	parent	75
-104	relationship	connected
-104	child	75
-103	parent	75
-103	relationship	connected
-103	child	75
-102	parent	58
-102	relationship	connected
-102	child	75
-101	parent	58
-101	relationship	connected
-101	child	58
-100	parent	64
-100	relationship	connected
-100	child	65
+135	parent	121
+135	relationship	connected
+135	child	122
+134	parent	120
+134	relationship	connected
+134	child	121
+male_parent	height	-1
+male_parent	window_y	0
+male_parent	window_x	0
+male_parent	width	-1
+male_parent	visible	true
+133	parent	120
+133	relationship	connected
+133	child	120
+86	parent	flow_relationship
+86	relationship	connected
+86	child	flow_relationship
+disk_relationship	x	586
+disk_relationship	fg	0 0 255
+disk_relationship	label	Disk
+disk_relationship	parent	classes
+disk_relationship	icon	disk.gif
+disk_relationship	y	126
+disk_relationship	child	disk_parent
+disk_relationship	relationship	parental
 communicate_relationship	fg	0 0 255
 communicate_relationship	child	communicate_parent
 communicate_relationship	relationship	parental
@@ -245,40 +57,250 @@ communicate_relationship	x	90
 communicate_relationship	parent	relationships_parent
 communicate_relationship	icon_width	64
 communicate_relationship	icon_height	64
-99	parent	66
-99	relationship	connected
-99	child	64
-98	parent	65
-98	relationship	connected
-98	child	66
-97	parent	66
-97	relationship	connected
-97	child	65
-96	parent	64
-96	relationship	connected
-96	child	66
-95	parent	65
-95	relationship	connected
-95	child	64
-94	parent	64
-94	relationship	connected
-94	child	65
-93	parent	75
-93	child	59
-93	relationship	connected
-group_relationship	fg	0 0 255
-group_relationship	child	group_parent
-group_relationship	relationship	parental
-group_relationship	y	44
-group_relationship	icon	group.gif
-group_relationship	label	Contact Group
-group_relationship	x	231
-group_relationship	parent	classes_parent
-group_relationship	icon_width	64
-group_relationship	icon_height	79
-92	parent	58
-92	relationship	connected
-92	child	58
+connect_relationship	fg	0 0 255
+connect_relationship	child	connect_parent
+connect_relationship	relationship	parental
+connect_relationship	y	11
+connect_relationship	icon	connect.gif
+connect_relationship	label	is connected to
+connect_relationship	x	319
+connect_relationship	parent	relationships_parent
+connect_relationship	icon_width	64
+connect_relationship	icon_height	64
+partof_parent	height	200
+partof_parent	width	400
+partof_parent	visible	false
+129	fg	0 0 255
+129	child	male_parent
+129	relationship	parental
+129	y	38
+129	icon	male.gif
+129	label	Male
+129	x	53
+129	parent	classes_relationship
+129	icon_width	64
+129	icon_height	89
+base	fg	0 0 255
+base	width	299
+base	visible	true
+base	window_y	12
+base	window_x	716
+base	y	12
+base	label	Main Menu
+base	x	716
+base	height	225
+128	fg	0 0 255
+128	child	group_parent
+128	relationship	parental
+128	y	31
+128	icon	group.gif
+128	label	Contact Group
+128	x	301
+128	parent	classes_relationship
+128	icon_width	64
+128	icon_height	79
+127	fg	0 0 255
+127	child	female_parent
+127	relationship	parental
+127	y	34
+127	icon	female.gif
+127	label	Female
+127	x	175
+127	parent	classes_relationship
+127	icon_width	64
+127	icon_height	91
+communicate_parent	height	200
+communicate_parent	width	400
+124	fg	0 0 255
+124	width	636
+124	child	118
+124	visible	false
+124	window_y	557
+124	window_x	690
+124	relationship	parental
+124	icon	group.gif
+124	y	354
+124	bitmap	background.gif
+124	label	Bosses
+124	x	179
+124	parent	contactapp_relationship
+124	icon_dirty	1
+124	icon_height	79
+124	icon_width	116
+124	height	342
+2	x	-70
+2	parent	site_parent
+2	icon	male.gif
+2	y	306
+2	child	male_parent
+2	relationship	parental
+123	fg	0 0 255
+123	width	464
+123	child	117
+123	visible	false
+123	window_y	636
+123	window_x	249
+123	relationship	parental
+123	icon	group.gif
+123	y	376
+123	label	Bosses
+123	x	436
+123	bitmap	background.gif
+123	parent	contactapp_relationship
+123	icon_height	79
+123	icon_width	64
+123	height	339
+1	x	208
+1	parent	site_parent
+1	icon	male.gif
+1	y	154
+1	child	male_parent
+1	relationship	parental
+122	relationship	parental
+122	visible	false
+122	icon_width	64
+122	SessionName	yottzumm
+122	SessionPassword	Unique Super Secret Password
+122	child	139
+122	CollaborationServer	 http://localhost:8088/tapi/template
+122	label	Katy Schildmeyer
+122	parent	contactapp_relationship
+122	y	310
+122	x	600
+122	property_file	motion/gedda/session2.sdp
+122	window_y	246
+122	icon_height	91
+122	v	0
+122	window_x	536
+122	fg	0 0 255
+122	t	3456677 5678899
+122	s	yottzumm
+122	height	371
+122	o	yottzumm 123456789 123459999 IN IP4 lc-soc-lc.at
+122	width	407
+122	m	application 8443 TCP/WSS/C3P *
+122	icon	female.gif
+122	WebSocket	null
+122	EmailAddress	ksdesign@gmail.com
+122	c	IN IP4 lc-soc-lc.at
+122	a	c3p-object:obj2
+0	x	-75
+0	parent	site_parent
+0	icon	male.gif
+0	y	46
+0	child	male_parent
+0	relationship	parental
+relationships_parent	height	200
+relationships_parent	x	21
+relationships_parent	window_y	254
+relationships_parent	window_x	21
+relationships_parent	width	400
+relationships_parent	visible	false
+relationships_parent	y	254
+121	relationship	parental
+121	visible	false
+121	icon_width	64
+121	child	116
+121	label	Bosses
+121	parent	contactapp_relationship
+121	y	65
+121	x	551
+121	property_file	motion/gedda/session1.sdp
+121	window_y	647
+121	icon_height	79
+121	v	0
+121	window_x	1268
+121	t	3456677 5678899
+121	fg	0 0 255
+121	s	group1-petname
+121	height	432
+121	o	yottzumm 123456789 123459999 IN IP4 lc-soc-lc.at
+121	width	513
+121	m	application 8443 TCP/WSS/C3P *
+121	icon	group.gif
+121	c	IN IP4 lc-soc-lc.at
+121	a	c3p-object:obj2
+121	bitmap	background.gif
+120	relationship	parental
+120	visible	false
+120	icon_width	151
+120	SessionName	yottzumm2
+120	SessionPassword	Unique Super Secret Password2
+120	child	138
+120	CollaborationServer	http://localhost:8088/tapi/template
+120	label	Christoph Valentin
+120	parent	contactapp_relationship
+120	y	118
+120	x	176
+120	property_file	motion/gedda/session1.sdp
+120	window_y	52
+120	icon_height	168
+120	v	0
+120	window_x	101
+120	fg	0 0 255
+120	t	3456677 5678899
+120	s	yottzumm2
+120	height	485
+120	o	yottzumm2 123456789 123459999 IN IP4 lc-soc-lc.at
+120	width	723
+120	m	application 8443 TCP/WSS/C3P *
+120	icon_dirty	1
+120	icon	male.gif
+120	WebSocket	null
+120	EmailAddress	yottzumm@gmail.com
+120	c	IN IP4 lc-soc-lc.at
+120	a	c3p-object:obj2
+120	bitmap	background.gif
+relationships_relationship	fg	0 0 255
+relationships_relationship	width	439
+relationships_relationship	child	137
+relationships_relationship	visible	true
+relationships_relationship	window_y	292
+relationships_relationship	window_x	544
+relationships_relationship	relationship	parental
+relationships_relationship	icon	relationships.gif
+relationships_relationship	y	4
+relationships_relationship	label	Relationships
+relationships_relationship	x	116
+relationships_relationship	parent	base
+relationships_relationship	icon_width	48
+relationships_relationship	icon_height	48
+relationships_relationship	height	192
+flowsover_relationship	fg	0 0 255
+flowsover_relationship	child	flowsover_parent
+flowsover_relationship	relationship	parental
+flowsover_relationship	y	10
+flowsover_relationship	icon	flowsover.gif
+flowsover_relationship	label	Flows Over
+flowsover_relationship	x	238
+flowsover_relationship	parent	relationships_parent
+flowsover_relationship	icon_width	64
+flowsover_relationship	icon_height	64
+contactapp_parent	width	810
+contactapp_parent	visible	false
+contactapp_parent	window_y	151
+contactapp_parent	window_x	729
+contactapp_parent	y	47
+contactapp_parent	bitmap	background.gif
+contactapp_parent	x	1044
+contactapp_parent	icon_height	1080
+contactapp_parent	icon_width	1080
+contactapp_parent	height	500
+classes_relationship	fg	0 0 255
+classes_relationship	width	448
+classes_relationship	child	126
+classes_relationship	visible	true
+classes_relationship	window_y	271
+classes_relationship	window_x	52
+classes_relationship	relationship	parental
+classes_relationship	icon	classes.gif
+classes_relationship	y	13
+classes_relationship	label	Classes
+classes_relationship	x	71
+classes_relationship	parent	base
+classes_relationship	icon_width	48
+classes_relationship	icon_height	48
+classes_relationship	height	278
 flag_relationship	x	681
 flag_relationship	fg	0 0 255
 flag_relationship	label	State
@@ -287,14 +309,100 @@ flag_relationship	icon	flag.gif
 flag_relationship	y	131
 flag_relationship	child	flag_parent
 flag_relationship	relationship	parental
-91	parent	75
-91	relationship	connected
-91	child	58
-90	parent	75
-90	relationship	connected
-90	child	75
-flow_parent	height	200
-flow_parent	width	400
+147	fg	0 0 255
+147	child	group_parent
+147	relationship	parental
+147	y	95
+147	icon	group.gif
+147	label	Web3D Consortium
+147	x	365
+147	parent	142
+147	icon_width	64
+147	icon_height	79
+145	fg	0 0 255
+145	child	male_parent
+145	relationship	parental
+145	y	102
+145	icon	male.gif
+145	label	Don Brutzman
+145	x	117
+145	parent	142
+145	icon_width	64
+145	icon_height	89
+classes_parent	x	32
+classes_parent	height	262
+classes_parent	window_y	521
+classes_parent	window_x	32
+classes_parent	width	347
+classes_parent	visible	false
+classes_parent	y	521
+144	fg	0 0 255
+144	width	1080
+144	child	146
+144	window_y	197
+144	visible	false
+144	window_x	223
+144	relationship	parental
+144	y	91
+144	icon	male.gif
+144	label	Joe Williams
+144	x	242
+144	parent	142
+144	icon_width	64
+144	icon_height	89
+144	height	1080
+flowsover_parent	height	200
+flowsover_parent	width	400
+112	fg	0 0 255
+112	child	connect_parent
+112	relationship	parental
+112	y	14
+112	icon	connect.gif
+112	label	is connected to
+112	x	312
+112	parent	relationships_relationship
+112	icon_width	64
+112	icon_height	64
+111	fg	0 0 255
+111	child	flowsover_parent
+111	relationship	parental
+111	y	11
+111	icon	flowsover.gif
+111	label	Flows Over
+111	x	230
+111	parent	relationships_relationship
+111	icon_width	64
+111	icon_height	64
+142	fg	0 0 255
+142	width	750
+142	child	143
+142	window_y	568
+142	visible	true
+142	window_x	215
+142	relationship	parental
+142	y	221
+142	icon	group.gif
+142	label	Contact Group
+142	x	400
+142	parent	contactapp_relationship
+142	icon_width	64
+142	icon_height	79
+142	height	361
+110	fg	0 0 255
+110	child	flow_parent
+110	relationship	parental
+110	y	12
+110	icon	flow2.gif
+110	label	Flow
+110	x	166
+110	parent	relationships_relationship
+110	icon_width	48
+110	icon_height	48
+site_parent	x	115
+site_parent	height	591
+site_parent	width	928
+site_parent	visible	false
+site_parent	y	121
 partof_relationship	fg	0 0 255
 partof_relationship	child	partof_parent
 partof_relationship	relationship	parental
@@ -306,132 +414,20 @@ partof_relationship	parent	relationships_parent
 partof_relationship	icon_width	64
 partof_relationship	icon_height	64
 contactapp_relationship	fg	0 0 255
-contactapp_relationship	width	1227
-contactapp_relationship	child	contactapp_parent
-contactapp_relationship	visible	false
+contactapp_relationship	width	837
+contactapp_relationship	child	136
+contactapp_relationship	visible	true
+contactapp_relationship	window_y	60
+contactapp_relationship	window_x	1010
 contactapp_relationship	relationship	parental
-contactapp_relationship	y	7
 contactapp_relationship	icon	flag.gif
+contactapp_relationship	y	7
 contactapp_relationship	label	Contact App
 contactapp_relationship	x	3
 contactapp_relationship	parent	base
 contactapp_relationship	icon_width	64
 contactapp_relationship	icon_height	64
-contactapp_relationship	height	771
-89	parent	58
-89	relationship	connected
-89	child	75
-88	parent	75
-88	relationship	connected
-88	child	58
-87	parent	58
-87	relationship	connected
-87	child	75
-86	parent	flow_relationship
-86	relationship	connected
-86	child	flow_relationship
-85	parent	58
-85	relationship	connected
-85	child	58
-84	parent	58
-84	relationship	connected
-84	child	58
-83	parent	58
-83	relationship	connected
-83	child	58
-flowsover_parent	height	200
-flowsover_parent	width	400
-82	parent	75
-82	relationship	connected
-82	child	58
-81	parent	75
-81	relationship	connected
-81	child	75
-connect_parent	height	200
-connect_parent	width	400
-80	parent	58
-80	relationship	connected
-80	child	75
-communicate_parent	height	200
-communicate_parent	width	400
-flowsover_relationship	fg	0 0 255
-flowsover_relationship	child	flowsover_parent
-flowsover_relationship	relationship	parental
-flowsover_relationship	y	10
-flowsover_relationship	icon	flowsover.gif
-flowsover_relationship	label	Flows Over
-flowsover_relationship	x	238
-flowsover_relationship	parent	relationships_parent
-flowsover_relationship	icon_width	64
-flowsover_relationship	icon_height	64
-2	x	-70
-2	parent	site_parent
-2	icon	male.gif
-2	y	306
-2	child	male_parent
-2	relationship	parental
-1	x	208
-1	parent	site_parent
-1	icon	male.gif
-1	y	154
-1	child	male_parent
-1	relationship	parental
-0	x	-75
-0	parent	site_parent
-0	icon	male.gif
-0	y	46
-0	child	male_parent
-0	relationship	parental
-79	parent	58
-79	relationship	connected
-79	child	58
-78	parent	75
-78	relationship	connected
-78	child	58
-77	parent	58
-77	relationship	connected
-77	child	75
-76	parent	75
-76	relationship	connected
-76	child	58
-75	relationship	parental
-75	visible	true
-75	icon_width	64
-75	child	group_parent
-75	label	Bosses
-75	parent	contactapp_parent
-75	y	87
-75	x	374
-75	property_file	motion/gedda/session1.sdp
-75	window_y	524
-75	icon_height	79
-75	v	0
-75	window_x	1366
-75	t	3456677 5678899
-75	fg	0 0 255
-75	s	group1-petname
-75	height	432
-75	o	yottzumm 123456789 123459999 IN IP4 lc-soc-lc.at
-75	width	513
-75	m	application 8443 TCP/WSS/C3P *
-75	icon	group.gif
-75	c	IN IP4 lc-soc-lc.at
-75	a	c3p-object:obj2
-75	bitmap	background.gif
-74	parent	65
-74	relationship	connected
-74	child	64
-disk_relationship	x	586
-disk_relationship	fg	0 0 255
-disk_relationship	label	Disk
-disk_relationship	parent	classes
-disk_relationship	icon	disk.gif
-disk_relationship	y	126
-disk_relationship	child	disk_parent
-disk_relationship	relationship	parental
-73	parent	64
-73	relationship	connected
-73	child	65
+contactapp_relationship	height	645
 flow_relationship	fg	0 0 255
 flow_relationship	child	flow_parent
 flow_relationship	relationship	parental
@@ -442,139 +438,3 @@ flow_relationship	x	176
 flow_relationship	parent	relationships_parent
 flow_relationship	icon_width	48
 flow_relationship	icon_height	48
-72	parent	65
-72	relationship	connected
-72	child	64
-71	parent	66
-71	relationship	connected
-71	child	65
-70	parent	64
-70	relationship	connected
-70	child	66
-relationships_relationship	fg	0 0 255
-relationships_relationship	width	439
-relationships_relationship	child	relationships_parent
-relationships_relationship	visible	true
-relationships_relationship	window_y	288
-relationships_relationship	window_x	472
-relationships_relationship	relationship	parental
-relationships_relationship	icon	relationships.gif
-relationships_relationship	y	10
-relationships_relationship	label	Relationships
-relationships_relationship	x	121
-relationships_relationship	parent	base
-relationships_relationship	icon_width	48
-relationships_relationship	icon_height	48
-relationships_relationship	height	192
-contactapp_parent	width	810
-contactapp_parent	visible	true
-contactapp_parent	window_y	19
-contactapp_parent	window_x	1046
-contactapp_parent	y	47
-contactapp_parent	bitmap	background.gif
-contactapp_parent	x	1044
-contactapp_parent	icon_height	1080
-contactapp_parent	icon_width	1080
-contactapp_parent	height	500
-69	parent	59
-69	relationship	connected
-69	child	59
-67	parent	58
-67	relationship	connected
-67	child	58
-66	fg	0 0 255
-66	child	female_parent
-66	relationship	parental
-66	y	117
-66	icon	female.gif
-66	label	Carol McDonald
-66	x	384
-66	parent	63
-66	icon_width	64
-66	icon_height	91
-65	fg	0 0 255
-65	width	400
-65	child	male_parent
-65	visible	false
-65	relationship	parental
-65	y	132
-65	icon	male.gif
-65	label	Joe Williams
-65	x	99
-65	parent	63
-65	icon_width	64
-65	icon_height	89
-65	height	200
-64	fg	0 0 255
-64	child	male_parent
-64	relationship	parental
-64	y	34
-64	icon	male.gif
-64	label	Don Brutzman
-64	x	249
-64	parent	63
-64	icon_width	64
-64	icon_height	89
-63	fg	0 0 255
-63	width	636
-63	child	group_parent
-63	visible	true
-63	window_y	600
-63	window_x	766
-63	relationship	parental
-63	icon	group.gif
-63	y	290
-63	bitmap	background.gif
-63	label	Bosses
-63	x	115
-63	parent	contactapp_parent
-63	icon_dirty	1
-63	icon_height	79
-63	icon_width	116
-63	height	342
-62	fg	0 0 255
-62	width	48
-62	child	female_parent
-62	relationship	parental
-62	y	42
-62	icon	female.gif
-62	label	Carol McDonald
-62	x	314
-62	parent	60
-62	icon_width	64
-62	icon_height	91
-62	height	48
-61	fg	0 0 255
-61	width	48
-61	child	male_parent
-61	visible	false
-61	relationship	parental
-61	y	76
-61	icon	male.gif
-61	label	Joe Williams
-61	x	73
-61	parent	60
-61	icon_width	64
-61	icon_height	89
-61	height	48
-60	fg	0 0 255
-60	width	464
-60	child	group_parent
-60	visible	true
-60	window_y	592
-60	window_x	352
-60	relationship	parental
-60	icon	group.gif
-60	y	312
-60	label	Bosses
-60	x	372
-60	bitmap	background.gif
-60	parent	contactapp_parent
-60	icon_height	79
-60	icon_width	64
-60	height	339
-site_parent	x	115
-site_parent	height	591
-site_parent	width	928
-site_parent	visible	false
-site_parent	y	121

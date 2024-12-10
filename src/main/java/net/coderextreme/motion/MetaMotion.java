@@ -1,9 +1,15 @@
 package net.coderextreme.motion;
 
-import javax.swing.*;
-import java.awt.event.*;
-import java.awt.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.StringTokenizer;
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JInternalFrame;
+import javax.swing.JTextArea;
 
 public class MetaMotion extends JInternalFrame {
 	Motion m;
@@ -31,23 +37,26 @@ public class MetaMotion extends JInternalFrame {
 		show();
 	}
 	class AndSearch implements ActionListener {
+        @Override
 		public void actionPerformed(ActionEvent ae) {
 			m.andSearch(TextAreaToStringArray(metadata));
 		}
 	}
 	class OrSearch implements ActionListener {
+        @Override
 		public void actionPerformed(ActionEvent ae) {
 			m.orSearch(TextAreaToStringArray(metadata));
 		}
 	}
 	class ApplyMetadata implements ActionListener {
+        @Override
 		public void actionPerformed(ActionEvent ae) {
 			m.apply(TextAreaToStringArray(metadata));
 		}
 	}
 	public String [] TextAreaToStringArray(JTextArea jta) {
 		StringTokenizer st = new StringTokenizer(metadata.getText(),"\n");
-		Vector strings = new Vector();
+		Vector<String> strings = new Vector<>();
 		while (st.hasMoreTokens()) {
 			strings.addElement(st.nextToken());
 		}
@@ -56,6 +65,7 @@ public class MetaMotion extends JInternalFrame {
 		return sarray;
 	}
 	class Retrieve implements ActionListener {
+        @Override
 		public void actionPerformed(ActionEvent ae) {
 			m.getSelectedMetaData(metadata);
 			repaint();

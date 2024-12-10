@@ -1,7 +1,9 @@
 package net.coderextreme.motion.gedda;
-import java.util.*;
-import java.awt.event.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.util.Iterator;
+import java.util.Vector;
 
 class ftpoidt {
 	void toggle(object_node current) {
@@ -28,10 +30,9 @@ class d_tech_list extends Vector<object_node> {
 
 	void apply_to_node(ftpoidt impl)
 	{
-		for (Iterator i = iterator(); i.hasNext(); ) {
-			object_node objp = (object_node)i.next();
-			impl.toggle(objp);
-		}
+        for (object_node objp : this) {
+        	impl.toggle(objp);
+        }
 	}
 
 	boolean single_element() {
@@ -60,15 +61,13 @@ class d_tech_list extends Vector<object_node> {
 		object_node npon;
 
 		npon = objp;
-		Iterator<object_node> sit = iterator();
-		while(sit.hasNext()) {
-			object_node o = sit.next();
+		for (object_node o : this) {
 			par = o.parent();
 			on = o;
-
+			
 			// o.set_associated_object(objp, oimove_.last_x, oimove_.last_y, OI_ACTIVE);
 			/* update the relationship */
-			on.put(oimove_.REL_PARENTAL, npon.id());
+			on.put(oimove.REL_PARENTAL, npon.id());
 			oimove_.location_from_event(on);
 		}
 	}
@@ -121,10 +120,8 @@ class d_tech_list extends Vector<object_node> {
 		selectedOimove.repaint();
 	}
 	public void removeFromOimove(oimove oim) {
-		Iterator<object_node> sit = iterator();
-		while(sit.hasNext()) {
-			object_node o = sit.next();
-			oim.objectsOnWindow.remove(o);
-		}
+            for (object_node o : this) {
+                oim.objectsOnWindow.remove(o);
+            }
 	}
 }

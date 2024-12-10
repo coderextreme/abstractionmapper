@@ -27,7 +27,7 @@ public class Valley extends MUDRoom {
 		super(n);
 	}
 	@Override
-	public int command(MUDRemote subject, Vector comm)
+	public int command(MUDRemote subject, Vector<Object> comm)
 	    throws RemoteException {
 		String verb = null;
 		if (!comm.isEmpty()) {
@@ -46,7 +46,7 @@ public class Valley extends MUDRoom {
 			ev = takeExit(getProperty("Mountain_Top.URL"), subject);
 		}
 		if (verb.equalsIgnoreCase("/exits")) {
-			Vector v = new Vector(1);
+			Vector<Object> v = new Vector<>(1);
 			v.addElement("/south, /se");
 			ev = subject.tell(v);
 		}

@@ -118,13 +118,13 @@ public class MUDObject implements MUDRemote, Runnable {
 		if (settings == null) {
 			try {
 				settings = new Properties();
+				InputStream is = new FileInputStream("src/main/resources/net/coderextreme/dev/objects.properties");
+				settings.load(is);
+			} catch (IOException e) {
 				InputStream is = MUDObject.class.getClassLoader().getResourceAsStream("net/coderextreme/dev/objects.properties");
 				if (is == null) {
 					System.err.println("input stream for properties is null");
-					is = new FileInputStream("src/main/resources/net/coderextreme/dev/objects.properties");
 				}
-				settings.load(is);
-			} catch (IOException e) {
 				e.printStackTrace(System.err);
 			}
 		}

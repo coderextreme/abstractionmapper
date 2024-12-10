@@ -1,8 +1,9 @@
 package net.coderextreme.motion.keep;
 
-import java.awt.*;
-import javax.swing.*;
-import net.coderextreme.motion.*;
+import javax.swing.Icon;
+import javax.swing.JLabel;
+
+import net.coderextreme.motion.Motion;
 
 class DragLabel extends JLabel
 /*

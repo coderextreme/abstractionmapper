@@ -1,5 +1,6 @@
 package net.coderextreme.main;
 
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
@@ -17,8 +18,8 @@ public class App {
 			} else {
 				Motion.main(new String[] {"src/main/resources/net/coderextreme/motion/contact.data", "src/main/resources/net/coderextreme/motion/gedda/"});
 			}
-		} catch (Exception e) {
-		    e.printStackTrace();
+		} catch (RemoteException e) {
+		    e.printStackTrace(System.err);
 		}
 	}
 }

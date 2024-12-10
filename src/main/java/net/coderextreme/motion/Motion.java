@@ -1,31 +1,77 @@
 package net.coderextreme.motion;
 
-import java.awt.event.*;
-import java.awt.image.*;
-import java.awt.*;
-import java.rmi.*;
-import java.net.*;
-import java.io.*;
-import java.util.*;
-import java.awt.dnd.*;
-import java.awt.datatransfer.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-import net.coderextreme.icbm.*;
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Panel;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.net.URLEncoder;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.UUID;
+import java.util.Vector;
+
+import javax.swing.AbstractButton;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
+import javax.swing.JDesktopPane;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.TransferHandler;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.chromium.ChromiumDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.safari.SafariDriver;
-import com.formdev.flatlaf.*;
-import java.util.UUID;
+
+import com.formdev.flatlaf.FlatLightLaf;
+
+import net.coderextreme.icbm.MUDClient;
+import net.coderextreme.icbm.MUDObject;
+import net.coderextreme.icbm.MUDRemote;
 
 public class Motion extends JInternalFrame implements InternalFrameListener,
 		MouseListener, MouseMotionListener, ComponentListener,
-		ActionListener, Serializable
+		ActionListener
 /*
 , DropTargetListener
 */
@@ -69,6 +115,14 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	public static final String VALUE_LAST		= "last";
 	public static final String RELATIONSHIP_PARENTAL = "parental";
 	public static final String RELATIONSHIP_CONNECTED = "connected";
+
+    public static object_list getOBJECT_LIST() {
+        return Motion.OBJECT_LIST;
+    }
+
+    public static void setOBJECT_LIST(object_list ob_list) {
+        Motion.OBJECT_LIST = ob_list;
+    }
 	int ss = 5; // handles square width
 	int handle = 0;
 	static final int north = 1;
@@ -81,7 +135,7 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	static final int northwest = 8;
 	int lx;
 	int ly;
-	static Vector elems = new Vector();
+	static Vector<Object> elems = new Vector<>();
 	static JRadioButtonMenuItem jrel_jrb;
 	static JRadioButtonMenuItem jarrow_jrb;
 	static JRadioButtonMenuItem jbreak_jrb;
@@ -119,8 +173,8 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		if (OBJECT_LIST == null) {
-			OBJECT_LIST = new object_list("motion"+File.separator+"prop.data");
+		if (Motion.OBJECT_LIST == null) {
+			Motion.setOBJECT_LIST(new object_list("motion"+File.separator+"prop.data"));
 		}
 		String root = "base";
 		MUDRemote o = OBJECT_LIST.find(root);
@@ -434,14 +488,20 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 */
 		IMD imd = null;
 		System.out.println("adding object "+root.id());
-		if (subj != null && subj.get(PROP_BACKGROUND) != null) {
-			String bg_name = image_dir+subj.get(PROP_BACKGROUND);
+		if (subj != null) { 
+		        String bg_name = subj.get(PROP_BACKGROUND);
+			if (bg_name == null) {
+				bg_name = "background.gif";
+			}
+			bg_name = image_dir+bg_name;
 			System.out.println ("bg="+bg_name);
 			// cache icons for speed
 			ImageIcon ii = (ImageIcon)icons.get(bg_name);
 			if (ii == null) {
 				ii = new ImageIcon(bg_name);
-				icons.put(bg_name, ii);
+				if (bg_name != null && ii != null) {
+					icons.put(bg_name, ii);
+				}
 			}
 			int w = subj.getInt(PROP_WIDTH);
 			int h = subj.getInt(PROP_HEIGHT);
@@ -512,8 +572,8 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 		} else {
 			// typearea.setMotion(this);
 		}
-	    } catch (RemoteException re) {
-		re.printStackTrace();
+	    } catch (Throwable re) {
+		re.printStackTrace(System.err);
 	    }
 	}
 	class IMD extends JButton {
@@ -1350,6 +1410,7 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 	    }
 	}
 	void view() {
+		// An icon is a relationship
 		try {
 		    for (Enumeration e = selected.elements();
 				e != null && e.hasMoreElements(); ) {
@@ -1360,19 +1421,23 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 				continue;
 			}
 			String child = o.get(PROP_CHILD);
-			MUDRemote bo = null;
 			if (child != null) {
-				System.out.println("child is "+child);
-				bo = OBJECT_LIST.insert_object(child); 
+				MUDRemote bo = OBJECT_LIST.new_object();
+				o.put(PROP_CHILD, bo.id());
 			} else {
 				System.out.println("child is null");
 			}
-			if (bo == null) {
-				bo = OBJECT_LIST.new_object();
-				o.put(PROP_CHILD, bo.id());
-				setUpObject(bo, false);
+		        // setUpObject(o, false);
+			// Show the child browser object
+			String sb = (String)o.get(PROP_VISIBLE);
+			if (sb != null) {
+				boolean b = Boolean.valueOf(sb).booleanValue();
+				if (!b) {
+					o.put(PROP_VISIBLE, "true");
+				}
+			} else {
+				o.put(PROP_VISIBLE, "true");
 			}
-			o.put(PROP_VISIBLE, "true");
 			show_if_visible(o);
 		    }
 		} catch (RemoteException re) {
@@ -1461,6 +1526,7 @@ public class Motion extends JInternalFrame implements InternalFrameListener,
 				// bo.setPlatformMotion(m);
 				// bo.setMotion(m);
 				m.setVisible(true);
+				System.out.println("I see id = "+bo.id());
 				num_frames++;
 				m.show_relationships();
 				m.toFront();
@@ -1688,7 +1754,7 @@ class SaveAction implements ActionListener {
         	if (result == JFileChooser.APPROVE_OPTION) {
             		File selectedFile = fileChooser.getSelectedFile();
             		Motion.lastDirectory = selectedFile.getParentFile();
-			Motion.OBJECT_LIST.save_db(selectedFile);
+			Motion.getOBJECT_LIST().save_db(selectedFile);
 		} else {
 		    System.out.println("File selection canceled.");
 		}
@@ -1696,6 +1762,7 @@ class SaveAction implements ActionListener {
 }
 
 class OpenAction implements ActionListener {
+	@Override
 	public void actionPerformed(ActionEvent ae) {
 		JFileChooser fileChooser = new JFileChooser();
 		if (Motion.lastDirectory != null) {
@@ -1705,7 +1772,7 @@ class OpenAction implements ActionListener {
         	if (result == JFileChooser.APPROVE_OPTION) {
             		File selectedFile = fileChooser.getSelectedFile();
             		Motion.lastDirectory = selectedFile.getParentFile();
-			Motion.OBJECT_LIST = new object_list(selectedFile);
+			Motion.setOBJECT_LIST(new object_list(selectedFile));
 		} else {
 		    System.out.println("File selection canceled.");
 		}
