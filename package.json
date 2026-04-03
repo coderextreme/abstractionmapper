@@ -1,0 +1,16 @@
+{
+  "name": "ContactsDirectory",
+  "version": "0.0.1",
+  "private": false,
+  "main": "app.js",
+  "type": "module",
+  "browser": {
+    "[module-name]": false
+  },
+  "dependencies": {
+    "express": "*"
+  },
+  "scripts": {
+    "start": "node app.js"
+  }
+}
