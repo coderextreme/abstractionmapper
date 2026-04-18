@@ -42,26 +42,28 @@ public class CommandThread extends Thread {
 			boolean linesep = false;
 			while ((c = is.read()) != -1) {
 				switch (c) {
-				case '\n', '\r' -> {
+				case '\n':
+				case '\r':
                                     if (!linesep) {
                                         sb.append("</td></tr>\n<tr><td>");
                                         linesep = true;
                                     }
                                     spaces = false;
-                                }
-				case '\t', ' ' -> {
+				    break;
+				case '\t':
+				case ' ':
                                     if (!spaces) {
                                         
                                         sb.append("</td><td>");
                                         spaces = true;
                                     }
                                     linesep = false;
-                                }
-                                default -> {
+				    break;
+				default:
                                     sb.append(c);
                                     spaces = false;
                                     linesep = false;
-                                }
+				    break;
 				}
 			}
 			sb.append("</td></tr></table>");

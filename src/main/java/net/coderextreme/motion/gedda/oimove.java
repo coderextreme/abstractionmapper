@@ -433,10 +433,18 @@ public class oimove extends JFrame
 
 		Dimension d = objp.getSize();
 		switch (pcp[0][0]) {
-		case 'w' -> objp.setSize(d.width+1, d.height);
-		case 'n' -> objp.setSize(d.width-1, d.height);
-		case 't' -> objp.setSize(d.width, d.height+1);
-		case 's' -> objp.setSize(d.width, d.height-1);
+			case 'w':
+				objp.setSize(d.width+1, d.height);
+				break;
+			case 'n':
+				objp.setSize(d.width-1, d.height);
+				break;
+			case 't':
+				objp.setSize(d.width, d.height+1);
+				break;
+			case 's':
+				objp.setSize(d.width, d.height-1);
+				break;
 		}
 	}
 	object_node pos;
@@ -681,21 +689,27 @@ public class oimove extends JFrame
 				@Override
 				public void actionPerformed(ActionEvent ae) {
 					switch (ae.getActionCommand()) {
-						case "Reset" -> {
-									b.removeAll();
-									add_props(objp, b);
-									object_node son;
-									son = subject_node(objp);
-									if (son != null)
-										add_props(son, b);
-									this.add("Center", b);
-									b.invalidate();
-									b.validate();
-									b.repaint();
+						case "Reset":
+						b.removeAll();
+						add_props(objp, b);
+						object_node son;
+						son = subject_node(objp);
+						if (son != null) {
+							add_props(son, b);
+							this.add("Center", b);
+							b.invalidate();
+							b.validate();
+							b.repaint();
 						}
-						case "Apply" -> apply(objp);
-						case "Dismiss" -> this.dispose();
-						default -> { }
+							break;
+						case "Apply":
+							apply(objp);
+							break;
+						case "Dismiss":
+							this.dispose();
+							break;
+						default:
+							break;
                     }
 				}
 			

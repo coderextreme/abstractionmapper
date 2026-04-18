@@ -34,7 +34,8 @@ public class MContainer extends Operation {
 			MUDRemote bo = Motion.OBJECT_LIST.find(ptrid);
 			while (bo != null) {
 				System.out.println("next object is "+bo.id());
-				if (bo instanceof Operation operation) {
+				if (bo instanceof Operation) {
+					Operation operation = (net.coderextreme.motion.Operation)bo;
 					ptr = operation;
 					ptr.play(m);
 				}

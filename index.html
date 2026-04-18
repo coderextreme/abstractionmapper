@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CheerpJ test</title>
+    <script src="https://cjrtnc.leaningtech.com/4.2/loader.js"></script>
+  </head>
+  <body>
+    <script>
+	cheerpjInit({
+    		javaProperties: ["java.awt.headless=false"]
+	}).then(() => {
+		(async () => {
+		cheerpjCreateDisplay(1000, 1000);
+		const exitCode = await cheerpjRunMain(
+		  "net.coderextreme.main.App",
+
+		  "/app/target/abstractionmapper-1.0.0.jar:/app/flatlaf-3.5.1.jar"
+		);
+		console.log(`Program exited with code ${exitCode}`);
+		})();
+      });
+// src/main/resources/net/coderextreme/motion/contact.data target/classes/net/coderextreme/motion/gedda/
+    </script>
+  </body>
+</html>
